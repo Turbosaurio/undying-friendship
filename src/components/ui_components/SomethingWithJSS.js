@@ -1,109 +1,52 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {connect} from 'react-redux'
 
-import {connect_jss} from '../../jss/ui'
-import {handleInitialData} from '../../redux/actions/shared'
-import {createUseStyles} from 'react-jss'
-
-import * as mixins from '../../jss/mixins'
+import {connect_jss, layoutStyles} from '../../jss/ui'
+import {mongoSample} from '../../redux/API'
 
 
-const large = 1024
-
-
-const styles = createUseStyles({
-	container:{
-		...mixins.widthConstrain(large),
-		...mixins.respondTo(large, {
-			...mixins.flexAll('row', 'center', 'flex-start'),
-		}),
-	},
-	list_3:{
-		...mixins.flexedGrid({cols: 1, margin: 20}, {cols: 2, margin: 20}, {cols: 3, margin: 20}),
-	},
-	list_1:{
-		...mixins.flexedGrid({cols: 1, margin: 20}, {cols: 1, margin: 20}, {cols: 1, margin: 20}),
-	},
-
-	list_fill:{
-		...mixins.respondTo(large, {
-			flex: 1,
-		})
-	},
-
-	list_320:{
-		...mixins.respondTo(large, {
-			width: 320,
-			marginLeft: 20
-		})
-	},
-
-	item:{
-		padding: ['1rem', 0],
-		textAlign: 'center',
-	},
-
-	item_red:{
-		backgroundColor: 'red',
-		color: 'white',
-	},
-
-	item_blue:{
-		backgroundColor: 'blue',
-		color: 'white',
-	}
-})
-
-
-class SomethingWithJSS extends Component{
-
-	state = {
-		left_list: '',
-		center_list: '',
-		right_list: '',
+const SomethingWithJSS = ({jss, mongo}) =>{
+	const [margin, setMargin] = useState(20)
+	
+	function _handleMargin(m){
+		setMargin(m)
 	}
 
-	componentDidMount(){
-		const {jss} = this.props
-		this.props.init()
-		this.setState( state => ({
-			...state,
-			left_list: `${jss.list_3}  ${jss.list_fill}`,
-			right_list: `${jss.list_1} ${jss.list_320}`
-		}))
-	}
+	const {rows, widgets} = mongoSample
 
-	render(){
-		const {jss} = this.props
-		const list = [1,2,3,4,5,6,7,8,9]
-		return(
-			<div className={jss.container}>
-				<div className={this.state.left_list}>
-					{ list.map( i => <div key={i} className={`${jss.item} ${jss.item_red}`}>{i}</div>)}
+	return(
+		<div>
+			{rows.map(row =>(
+				<div key={row} className={jss.row}>
+					<div className={jss.row_inner}>
+						{
+							Object.keys(widgets).map( widget => {
+								const {name, type, column, rowID, list} = widgets[widget]
+								let item_color = ''
+
+								switch(column){
+									case 'b': item_color = {backgroundColor: 'red'}; break;
+									case 'c': item_color = {backgroundColor: 'green'}; break;
+									default: item_color = {backgroundColor: 'blue'}; break;
+								}
+
+								if(row === rowID) return (
+									<div key={widget} className={`${jss.list_3_cols} ${column !== 'a' ? jss.col_sister : ''}`}>
+										{list.map( i => <div style={item_color}>{i}</div>)}
+									</div>
+								)
+							})
+						}
+					</div>
 				</div>
-				<div className={this.state.right_list}>
-					{ list.map( i => <div key={i} className={`${jss.item} ${jss.item_blue}`}>{i}</div>)}
-				</div>
-			</div>
-		)
-	}
+			))}
+		</div>
+	)
 }
 
-
-const mapStateToProps = ({mongo}) => {
-	return {
-		mongo
-	}
-}
-
-
-const mapDispatchToProps = dispatch => {
-	return {
-		init: _ => dispatch(handleInitialData()),
-	}
-}
+const mapStateToProps = ({mongo}) => ({mongo})
 
 export default connect_jss(
-	styles,
-	connect(mapStateToProps, mapDispatchToProps)(SomethingWithJSS)
+	layoutStyles(10),
+	connect(mapStateToProps)(SomethingWithJSS)
 )

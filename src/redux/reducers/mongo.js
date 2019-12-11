@@ -4,10 +4,7 @@ import {
 } from '../actions/mongo'
 
 export default function mongo(
-		state = {
-			lala: true,
-			lele: true
-		},
+		state = {},
 		action
 	){
 
@@ -18,7 +15,6 @@ export default function mongo(
 				...action.val
 			}
 		case TOGGLE_MONGO_PROP:
-		console.log(action.val)
 			return{
 				...state,
 				[action.val] : !state[action.val]
