@@ -4,7 +4,10 @@ import {
 } from '../actions/mongo'
 
 export default function mongo(
-		state = {},
+		state = {
+			rows: [],
+			widgets: {}
+		},
 		action
 	){
 

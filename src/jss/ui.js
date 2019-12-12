@@ -8,8 +8,12 @@ export const layoutStyles = margin => (
 	createUseStyles({
 		row:{
 			width: '100%',
-			padding: [(margin * 2), 0]
 		},
+
+		row_title:{
+			textAlign: 'center',
+		},
+
 		row_inner:{
 			...mixins.widthConstrain(large),
 			...mixins.respondTo(large, {
@@ -17,11 +21,25 @@ export const layoutStyles = margin => (
 			}),
 		},
 
-		list_3_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 2, margin: margin}, {cols: 3, margin: margin}), },
-		list_2_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 2, margin: margin}), },
-		list_1_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 1, margin: margin}), },
+		container:{
+			width: '100%',
+			padding: [(margin * 2), 0]
+		},
 
-		col_fill:{...mixins.respondTo(large, {flex: 1,})},
+		list_3_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 2, margin: margin}, {cols: 3, margin: margin}), marginTop: margin},
+		list_2_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 2, margin: margin}), marginTop: margin},
+		list_1_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 1, margin: margin}), marginTop: margin},
+
+		col_fill:{
+			...mixins.respondTo(large,
+				{
+					flex: 1,
+					'&:not(:first-child)':{
+						marginLeft: margin
+					}
+				}
+			)
+		},
 		col_third:{...mixins.respondTo(large, {width: 'calc(100% / 3)', marginLeft: margin})},
 		col_80:{...mixins.respondTo(large, {width: '80%', marginLeft: margin})},
 		col_70:{...mixins.respondTo(large, {width: '70%', marginLeft: margin})},
@@ -33,7 +51,33 @@ export const layoutStyles = margin => (
 		col_sister:{
 			...mixins.respondToMax(large, {marginTop: margin}),
 			...mixins.respondTo(large, {marginLeft: margin}),
+		},
+
+		col_inner:{
+			boxSizing: 'border-box',
+			padding: 16,
+			border: '1px solid white'
+		},
+
+		item:{
+			backgroundColor: 'white',
+			color: 'black',
+			textAlign: 'center',
+			padding: [16, 0]
+		},
+
+		item_inner:{
+			boxSizing: 'border-box',
+			padding: 16,
+		},
+
+		image:{
+			display: 'block',
+			width: '100%',
+			marginBottom: margin,
+			borderRadius: 10
 		}
+
 	})
 )
 
