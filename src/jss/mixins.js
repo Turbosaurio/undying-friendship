@@ -4,6 +4,17 @@ export const rePixel = num => `${num}px`
 export const unPixel = num => parseInt(num, 10)
 
 
+export const hidden = _ =>{
+	return{
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		width: 0,
+		height: 0,
+		overflow: 'hidden',
+	}
+}
+
 export const pseudo = (pseudo = 'before', obj) =>{
 	return{
 		[`&:${pseudo}`]:{

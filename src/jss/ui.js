@@ -6,8 +6,16 @@ const large = 1024, mid = 768, small = 320
 
 export const layoutStyles = margin => (
 	createUseStyles({
+
+		hidden_header:{
+			...mixins.hidden(),
+		},
+
 		row:{
 			width: '100%',
+			'&:not(:first-child)':{
+				marginTop: margin
+			}
 		},
 
 		row_title:{

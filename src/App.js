@@ -6,8 +6,8 @@ import './css/main.css'
 import {handleInitialData} from './redux/actions/shared'
 
 import UIMenu from './components/ui_components/UIMenu'
-import TogglePanel from './components/ui_components/TogglePanel'
-import SomethingWithJSS from './components/ui_components/SomethingWithJSS'
+
+import SiteBody from './components/site_components/SiteBody'
 import LoadingBar from 'react-redux-loading-bar'
 
 const viernullvier = _ =>{
@@ -22,11 +22,13 @@ const Baby = _ =>{
 	)
 }
 
-const Jesus = _ => {
+const Jesus = _ =>{
 	return(
-		<TogglePanel initial={true}>
-			<SomethingWithJSS />
-		</TogglePanel>
+		<Fragment>
+			{/* TODO header Component*/}
+			<SiteBody />
+			{/* TODO footer Component*/}
+		</Fragment>
 	)
 }
 
@@ -61,7 +63,7 @@ const mapStateToProps = ({finish}) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		init: _ => dispatch(handleInitialData()),
+		init: _ => {dispatch(handleInitialData())},
 	}
 }
 
