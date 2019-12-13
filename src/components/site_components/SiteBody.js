@@ -1,7 +1,8 @@
 import React, {Fragment} from 'react'
 import {connect} from 'react-redux'
 
-import {layoutStyles,connect_jss} from '../../jss/ui'
+import {siteLayout} from '../../jss/site'
+import connect_jss from '../../jss/connect_jss'
 
 import Row from './Row'
 import Widget from './Widget'
@@ -29,6 +30,6 @@ const SiteBody = ({mongo, jss}) =>{
 const mapStateToProps = ({mongo}) => ({mongo})
 
 export default connect_jss(
-	layoutStyles(20),
+	siteLayout(20),
 	connect(mapStateToProps)(SiteBody)
 )

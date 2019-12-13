@@ -273,3 +273,19 @@ export const singleRow = marginLeft => {
 	}
 }
 
+export const invertTheme = theme => {
+	const {
+		color_1, bg_color_1,
+		color_2, bg_color_2,
+		color_3, bg_color_3,
+	} = theme
+	return{
+		color_1: bg_color_1,
+		bg_color_1: color_1,
+		color_2: bg_color_2,
+		bg_color_2: color_2,
+		color_3: bg_color_3,
+		bg_color_3: color_3,
+
+	}
+}

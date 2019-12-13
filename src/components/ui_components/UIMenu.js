@@ -6,8 +6,8 @@ import {NavLink} from 'react-router-dom'
 const UIMenu = _ => {
 	return(
 		<nav>
-			<NavLink to="/">Baby</NavLink>
-			<NavLink to="/jesus">Jesus</NavLink>
+			<NavLink to="/">Test</NavLink>
+			<NavLink to="/site">Site</NavLink>
 		</nav>
 	)
 }

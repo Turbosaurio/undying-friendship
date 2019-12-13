@@ -1,97 +1,61 @@
-import React from 'react'
+
 import {createUseStyles} from 'react-jss'
 import * as mixins from './mixins'
 
-const large = 1024, mid = 768, small = 320
+import {
+	viewports,
 
-export const layoutStyles = margin => (
-	createUseStyles({
+} from './settings'
 
-		hidden_header:{
-			...mixins.hidden(),
-		},
+export const uiColors = (theme, type = 'dark') => {
 
-		row:{
-			width: '100%',
-			'&:not(:first-child)':{
-				marginTop: margin
-			}
-		},
+	const colors = _ =>{
+		switch(type){
+			case 'dark': return mixins.invertTheme(theme)
+			default: return theme
+		}
+	}
 
-		row_title:{
-			textAlign: 'center',
-		},
+	const {
+		color_1, bg_color_1,
+		color_2, bg_color_2,
+		color_3, bg_color_3,
+	} = colors
 
-		row_inner:{
-			...mixins.widthConstrain(large),
-			...mixins.respondTo(large, {
-				...mixins.flexAll('row', 'center', 'flex-start'),
-			}),
-		},
+	return createUseStyles({
 
-		container:{
-			width: '100%',
-			padding: [(margin * 2), 0]
-		},
+	})
+}
 
-		list_3_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 2, margin: margin}, {cols: 3, margin: margin}), marginTop: margin},
-		list_2_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 2, margin: margin}), marginTop: margin},
-		list_1_cols:{ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 1, margin: margin}), marginTop: margin},
 
-		col_fill:{
-			...mixins.respondTo(large,
-				{
-					flex: 1,
-					'&:not(:first-child)':{
-						marginLeft: margin
-					}
-				}
-			)
-		},
-		col_third:{...mixins.respondTo(large, {width: 'calc(100% / 3)', marginLeft: margin})},
-		col_80:{...mixins.respondTo(large, {width: '80%', marginLeft: margin})},
-		col_70:{...mixins.respondTo(large, {width: '70%', marginLeft: margin})},
-		col_60:{...mixins.respondTo(large, {width: '60%', marginLeft: margin})},
-		col_50:{...mixins.respondTo(large, {width: '50%', marginLeft: margin})},
-		col_40:{...mixins.respondTo(large, {width: '40%', marginLeft: margin})},
-		col_30:{...mixins.respondTo(large, {width: '30%', marginLeft: margin})},
-
-		col_sister:{
-			...mixins.respondToMax(large, {marginTop: margin}),
-			...mixins.respondTo(large, {marginLeft: margin}),
-		},
-
-		col_inner:{
+export const uiLayout = (margin, side, type) => {
+	const {large, mid, small} = viewports
+	return createUseStyles({
+		ui_panel:{
+			position: 'absolute',
+			top: 0,
+			height: '100vh',
+			width: small,
 			boxSizing: 'border-box',
-			padding: 16,
-			border: '1px solid white'
+			padding: margin,
 		},
 
-		item:{
-			backgroundColor: 'white',
-			color: 'black',
-			textAlign: 'center',
-			padding: [16, 0]
+		[`ui_panel_${side}`]:{
+			[`${side}`]: 0,
 		},
 
-		item_inner:{
-			boxSizing: 'border-box',
-			padding: 16,
+
+		[`ui_panel_${type}`]:{
+
 		},
 
-		image:{
-			display: 'block',
+		ui_column:{
 			width: '100%',
-			marginBottom: margin,
-			borderRadius: 10
+		},
+
+		ui_title:{
+			marginTop: 0,
 		}
 
 	})
-)
-
-
-export const connect_jss = (jss, Component) =>{
-	return _ => {
-		return <Component jss={jss()}/>
-	}
 }

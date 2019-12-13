@@ -6,9 +6,14 @@ import './css/main.css'
 import {handleInitialData} from './redux/actions/shared'
 
 import UIMenu from './components/ui_components/UIMenu'
+import UISettings from './components/ui_components/UISettings'
 
 import SiteBody from './components/site_components/SiteBody'
 import LoadingBar from 'react-redux-loading-bar'
+import TogglePanel from './components/ui_components/TogglePanel'
+
+import {TestFunctionA} from './components/test_components/TestA'
+
 
 const viernullvier = _ =>{
 	return(
@@ -16,13 +21,9 @@ const viernullvier = _ =>{
 	)
 }
 
-const Baby = _ =>{
-	return(
-		<div>Baby</div>
-	)
-}
+const Test = _ => <TestFunctionA init={5}/>
 
-const Jesus = _ =>{
+const Site = _ =>{
 	return(
 		<Fragment>
 			{/* TODO header Component*/}
@@ -41,10 +42,15 @@ const App = ({init, loading}) =>{
 				loading === true
 					? <div>wait</div>
 					: <Fragment>
-						<UIMenu />
+						<TogglePanel name="navigation">
+							<UIMenu />
+						</TogglePanel>
+						<TogglePanel name="settings">
+							<UISettings />
+						</TogglePanel>
 						<Switch>
-							<Route exact path="/" component={Baby} />
-							<Route path="/jesus" component={Jesus}/>
+							<Route exact path="/" component={Test} />
+							<Route path="/site" component={Site}/>
 							<Route component={viernullvier}/>
 						</Switch>
 					</Fragment>
