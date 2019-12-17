@@ -1,4 +1,9 @@
+import {
+	viewports,
 
+} from './settings'
+
+const {large, mid, small} = viewports
 
 export const rePixel = num => `${num}px`
 export const unPixel = num => parseInt(num, 10)
@@ -195,12 +200,13 @@ export const hover = (content, descriptor = '') => {
 }
 
 export const flexAll = (
-	direction = 'row',
+	flexDirection = 'row',
 	justifyContent = 'flex-start',
 	alignItems = 'stretch',
 	flexWrap = 'nowrap') => {
 	return{
 		display: 'flex',
+		flexDirection,
 		justifyContent,
 		alignItems,
 		flexWrap,
@@ -241,15 +247,16 @@ const flexedGridBase = (total, margin, expand = true) => {
 }
 
 export const flexedGrid = (mobile, tablet, desktop, expand) =>{
+	const stretch = expand ? 'stretch' : 'flex-start'
 	return{
-		...flexAll('row', 'center', 'flex-start', 'wrap'),
-		...respondToMax(768, {
+		...flexAll('row', 'center', stretch, 'wrap'),
+		...respondToMax(mid, {
 			...flexedGridBase(mobile.cols, mobile.margin, expand)
 		}),
-		...respondToMinMax(768, 1024, {
+		...respondToMinMax(mid, large, {
 			...flexedGridBase(tablet.cols, tablet.margin, expand)
 		}),
-		...respondTo(1024, {
+		...respondTo(large, {
 			...flexedGridBase(desktop.cols, desktop.margin, expand)
 		}),
 	}

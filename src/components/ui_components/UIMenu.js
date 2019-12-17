@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom'
 
 const UIMenu = _ => {
 	return(
-		<nav>
+		<nav aria-label="User Interface Navigation">
 			<NavLink to="/">Test</NavLink>
 			<NavLink to="/site">Site</NavLink>
 		</nav>
