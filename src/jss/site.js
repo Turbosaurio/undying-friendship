@@ -65,31 +65,64 @@ export const rowStyles = createUseStyles({
 
 
 export const widgetStyles = createUseStyles({
+	// props:{margin,cols}
+	list_grid: props => ({
+		marginTop: props.margin,
+		...mixins.flexedGrid(
+			{cols: 1, margin: props.margin},
+			{cols: 1, margin: props.margin},
+		),
+	}),
 
-	list_3_cols: margin => ({ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 2, margin: margin}, {cols: 3, margin: margin}), marginTop: margin}),
-	list_2_cols: margin => ({ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 2, margin: margin}), marginTop: margin}),
-	list_1_cols: margin => ({ ...mixins.flexedGrid({cols: 1, margin: margin}, {cols: 1, margin: margin}, {cols: 1, margin: margin}), marginTop: margin}),
+	list_grid_1: props => ({
+		...mixins.flexedGrid(
+			{}, {},
+			{cols: 1, margin: props.margin},
+		),
+	}),
 
-	col_fill: margin =>({
+	list_grid_2: props => ({
+		...mixins.flexedGrid(
+			{}, {},
+			{cols: 2, margin: props.margin},
+		),
+	}),
+
+	list_grid_3: props => ({
+		...mixins.flexedGrid(
+			{}, {},
+			{cols: 3, margin: props.margin},
+		),
+	}),
+
+	list_grid_4: props => ({
+		...mixins.flexedGrid(
+			{}, {},
+			{cols: 4, margin: props.margin},
+		),
+	}),
+
+
+
+	col_fill: props =>({
 		...mixins.respondTo(large,
 			{
 				flex: 1,
 				'&:not(:first-child)':{
-					marginLeft: margin
+					marginLeft: props.margin
 				}
 			}
 		)
 	}),
 	
-
-	col_sister: margin => ({
-		...mixins.respondToMax(large, {marginTop: margin}),
-		...mixins.respondTo(large, {marginLeft: margin}),
+	col_sister: props => ({
+		...mixins.respondToMax(large, {marginTop: props.margin}),
+		...mixins.respondTo(large, {marginLeft: props.margin}),
 	}),
 
-	col_inner: margin =>({
+	col_inner: props =>({
 		boxSizing: 'border-box',
-		padding: margin,
+		padding: props.margin,
 		border: '1px solid white',
 	}),
 
@@ -102,16 +135,44 @@ export const widgetStyles = createUseStyles({
 		fontSize: '2rem',
 	},
 
+	item_summary:{
+		marginTop: 10,
+		'& h3':{ marginTop: 0}
+	},
+
+	item_horizontal_summary: props => ({
+		...mixins.flexAll('row', 'center', 'stretch', 'wrap'),
+		'&>*':{
+			...mixins.respondToMax(mid, {
+				width: '100%',
+				'&:not(:first-child)':{
+					marginTop: props.margin
+				}
+			}),
+			...mixins.respondTo(mid, {
+				flex: 1,
+				'&:not(:first-child)':{
+					marginLeft: props.margin
+				}
+			})
+		}
+	}),
+
+	item_vertical_summary:{
+		display: 'block',
+	},
+
 	item_inner:{
 		boxSizing: 'border-box',
 		padding: 16,
 	},
 
-	image: margin => ({
+	image: props => ({
 		display: 'block',
 		width: '100%',
-		marginBottom: margin,
-		borderRadius: 10
+		marginBottom: props.margin,
+		borderRadius: 10,
+		alignSelf: 'flex-start'
 	})
 })
 

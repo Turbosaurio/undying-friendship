@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default (jss, Component) =>{
-	return _ => {
-		return <Component jss={jss()}/>
+	return props => {
+		return <Component jss={jss()} {...props}/>
 	}
 }

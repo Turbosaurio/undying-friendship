@@ -1,18 +1,17 @@
 const defaultContents = {
 	img:{
-		show: true,
+		show: "true",
 		alt: 'forrest gump running',
 		src: 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fearnthis.net%2Fwp-content%2Fuploads%2F2013%2F09%2Fforrest-gump-1.jpg&f=1&nofb=1',
 	},				
 	excerpt:{
-		show: true,
+		show: "true",
 		text: 'Ut mollis consectetur purus quis tincidunt. Vestibulum et odio odio. Ut dapibus elementum lobortis. Vestibulum hendrerit a ante id fringilla. Sed laoreet nunc eros, et condimentum nisi maximus eu. Curabitur et ultricies enim, at pulvinar metus. Donec vitae dui tristique, pretium augue non, venenatis ante. Sed gravida fringilla pellentesque. In nec pretium nibh, ac semper arcu. Aliquam imperdiet viverra nisi, vitae sodales lorem ultricies ac. Phasellus non venenatis risus. Aliquam aliquet facilisis turpis, et aliquam orci volutpat in. Sed eget commodo tellus.',
 	},
 	itemsList: {
-		show: true,
+		show: "true",
 		list: [1,2,3,4,5,6,7,8],
-		columns: 2,
-	}
+	},
 }
 
 
@@ -84,9 +83,19 @@ export const mongoSample = {
 		},
 	},
 	settings:{
-		rowMargin: 10,
-		columnMargin: 10,
-		listMargin: 10,
+		rows:{
+			margin: 10,
+		},
+		columns:{
+			margin: 10,
+		},
+		widgets:{
+			colorScheme: 'a_a',
+			imageShape: 'square',
+			summaryLayout: 'horizontal',
+			listColumns: 2,
+			widgetSpacing: 15,
+		}
 	}
 }
 

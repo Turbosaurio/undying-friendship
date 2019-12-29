@@ -5,7 +5,7 @@ import Row from './Row'
 import Widget from './Widget'
 
 const SiteBody = ({mongo}) =>{
-	const {rows, widgets, settings} = mongo
+	const {rows, widgets} = mongo
 
 	return(
 		<Fragment>

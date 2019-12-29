@@ -1,15 +1,11 @@
-import React, {useState} from 'react'
+import React from 'react'
+import {connect} from 'react-redux'
 import {siteColors, widgetStyles} from '../../jss/site'
 
-import TogglePanel from '../ui_components/TogglePanel'
+const Widget = ({contents, widgetSettings}) => {
 
-const Widget = ({contents}) => {
 	const {name, img, excerpt, itemsList} = contents
-
-	const [listColumns, setListColumns] = useState(itemsList.columns)
-	const [spacing, changeSpacing] = useState(20)
-
-	const [colors, changeColors] = useState('a_a')
+	const {colorScheme, summaryLayout, listColumns, widgetSpacing} = widgetSettings
 
 	const theme = {
 		bg_color_1: '#ef2c13',
@@ -20,47 +16,23 @@ const Widget = ({contents}) => {
 		color_3: '#9f68a5',
 	}
 
-	const jss = widgetStyles(parseInt(spacing))
+	const jss = widgetStyles({
+		margin: widgetSpacing,
+		cols: listColumns
+	})
 	const jssColors = siteColors(theme)
 
 	return(
 		<section className={jss.col_fill}>
-			<div className={`${jss.col_inner} ${jssColors[`coloring_${colors}`]}`}>
-
-				<TogglePanel name="Widget Options" initial={true}>
+			<div className={`${jss.col_inner} ${jssColors[`coloring_${colorScheme}`]}`}>
+				<div className={`${jss[`item_${summaryLayout}_summary`]} ${jss.item_summary}`}>
+					<img className={jss.image} {...img} />
 					<div>
-						<select defaultValue={colors} onChange={ e => changeColors(e.target.value)}>
-							<option disabled>Colour theme</option>
-							<option>a_a</option>
-							<option>a_b</option>
-							<option>b_b</option>
-							<option>b_c</option>
-							<option>c_c</option>
-						</select>
+						<h3>{name}</h3>
+						<div show={excerpt.show.toString()}>{excerpt.text}</div>
 					</div>
-					<div>
-							<select defaultValue={listColumns} onChange={ e => setListColumns(e.target.value)}>
-							<option disabled>Numer of columns for lists</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-						</select>
-					</div>
-					<div>
-							<select defaultValue={parseInt(spacing)} onChange={ e => changeSpacing(e.target.value)}>
-							<option disabled>Spacing in pixels</option>
-							<option>10</option>
-							<option>20</option>
-							<option>30</option>
-						</select>
-					</div>
-				</TogglePanel>
-
-
-				<h3>{name}</h3>
-				<img show={img.show.toString()} className={jss.image} {...img} />
-				<div show={excerpt.show.toString()}>{excerpt.text}</div>
-				<div show={itemsList.show.toString()} className={jss[`list_${listColumns}_cols`]}>
+				</div>
+				<div show={itemsList.show.toString()} className={`${jss.list_grid} ${jss[`list_grid_${listColumns}`]}`}>
 					{
 						itemsList.list.map( i =>
 							<div className={jss.item} key={i}>{i}</div>
@@ -72,4 +44,10 @@ const Widget = ({contents}) => {
 	)
 }
 
-export default Widget
+
+const mapStateToProps = ({mongo}) => {
+	const widgetSettings = mongo.settings.widgets
+	return {widgetSettings}
+}
+
+export default connect(mapStateToProps)(Widget)

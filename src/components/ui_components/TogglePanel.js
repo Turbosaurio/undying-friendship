@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react'
+import React, {useState} from 'react'
 import {createUseStyles} from 'react-jss'
 
 import * as mixins from '../../jss/mixins'
@@ -17,9 +17,10 @@ const panelJSS = createUseStyles({
 	},
 
 	panel_inner:{
-		...mixins.flexAll('row', 'space-between', 'center'),
+		...mixins.flexAll('row', 'center', 'center', 'wrap'),
 		'&>*':{
-			marginTop: 10
+			display: 'block',
+			margin: [10, 5, 0]
 		}
 	},
 
@@ -61,7 +62,7 @@ const TogglePanel = ({name, children, initial}) => {
 				<div>{name}</div>
 				<button className={jss.button} title={title} onClick={toggle}>{icon}</button>
 			</div>
-			<div class={jss.panel_inner}>
+			<div className={jss.panel_inner}>
 				{status && children}
 			</div>
 		</div>

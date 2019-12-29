@@ -8,12 +8,13 @@ import {handleInitialData} from './redux/actions/shared'
 import UIMenu from './components/ui_components/UIMenu'
 import UISettings from './components/ui_components/UISettings'
 
-import SiteBody from './components/site_components/SiteBody'
 import LoadingBar from 'react-redux-loading-bar'
 import TogglePanel from './components/ui_components/TogglePanel'
 
 import {TestFunctionA} from './components/test_components/TestA'
 
+import Menu from './components/site_components/Menu'
+import SiteBody from './components/site_components/SiteBody'
 
 const viernullvier = _ =>{
 	return(
@@ -26,7 +27,7 @@ const Test = _ => <TestFunctionA init={5}/>
 const Site = _ =>{
 	return(
 		<Fragment>
-			{/* TODO header Component*/}
+			<Menu />
 			<SiteBody />
 			{/* TODO footer Component*/}
 		</Fragment>
@@ -45,7 +46,7 @@ const App = ({init, loading}) =>{
 						<TogglePanel name="navigation">
 							<UIMenu />
 						</TogglePanel>
-						<TogglePanel name="settings">
+						<TogglePanel name="settings" initial={true}>
 							<UISettings />
 						</TogglePanel>
 						<Switch>
