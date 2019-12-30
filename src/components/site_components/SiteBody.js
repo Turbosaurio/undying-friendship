@@ -7,6 +7,8 @@ import Widget from './Widget'
 const SiteBody = ({mongo}) =>{
 	const {rows, widgets} = mongo
 
+	
+
 	return(
 		<Fragment>
 			{rows.map(row => {

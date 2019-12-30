@@ -1,4 +1,4 @@
-import React,{Fragment, useEffect} from 'react'
+import React,{Fragment, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import './css/main.css'
@@ -35,7 +35,29 @@ const Site = _ =>{
 }
 
 const App = ({init, loading}) =>{
-	useEffect( _ => init())
+
+	const [panelLeftStatus, panelLeftStatusToggle] = useState(false)
+	const [panelRightStatus, panelRightStatusToggle] = useState(false)
+
+	const panelLeftClick	= _ => {
+		if(panelRightStatus && windowWidth < 1024) panelRightStatusToggle(false)
+		panelLeftStatusToggle(!panelLeftStatus)
+	}
+	const panelRightClick= _ => {
+		if(panelLeftStatus && windowWidth < 1024) panelLeftStatusToggle(false)
+		panelRightStatusToggle(!panelRightStatus)
+	}
+
+	const [windowWidth, resetWindowWidth] = useState(window.innerWidth)
+	const updateWidth = _ => {
+		resetWindowWidth(window.innerWidth)
+	}
+	useEffect( _ => {
+		window.addEventListener('resize', updateWidth)
+		return _ => window.removeEventListener('resize', updateWidth)
+	})
+
+	useEffect( _ => {init()}, loading)
 	return (
 		<Fragment>
 			<LoadingBar />
@@ -43,10 +65,10 @@ const App = ({init, loading}) =>{
 				loading === true
 					? <div>wait</div>
 					: <Fragment>
-						<TogglePanel name="navigation">
+						<TogglePanel name="navigation" side="left" status={panelLeftStatus} clickFunction={panelLeftClick}>
 							<UIMenu />
 						</TogglePanel>
-						<TogglePanel name="settings" initial={true}>
+						<TogglePanel name="settings" side="right" status={panelRightStatus} clickFunction={panelRightClick}>
 							<UISettings />
 						</TogglePanel>
 						<Switch>

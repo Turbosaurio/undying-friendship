@@ -43,71 +43,22 @@ const jss = createUseStyles({
 	},
 })
 
-const navigation = {
-	questionaries:{
-		id: 'questionaries',
-		name: 'Questionaries',
-		subItems: {
-			designQuestionary:{
-				id: 'designQuestionary',
-				name: 'Design Questionary',
-			},
-			edlioFeatures:{
-				id: 'edlioFeatures',
-				name: 'Edlio Features Questionary',
-			},
-		}
-	},
-	header:{
-		id: 'header',
-		name: 'Header',
-	},
-	footer:{
-		id: 'footer',
-		name: 'Footer',
-	},
-	animations:{
-		id: 'animations',
-		name: 'Animations'
-	},
-	sections:{
-		id: 'sections',
-		name: 'Sections',
-		subItems: {
-			shuffle:{
-				id: 'shuffle', /// <--- id is also the path if href doesnt exist
-				name: 'Shuffle',
-			},
-			news:{
-				id: 'news',
-				name: 'News',
-			},
-			events:{
-				id: 'events',
-				name: 'Events',
-			},
-			spotlight:{
-				id: 'spotlight',
-				name: 'Spotlight Message',
-			},
-			quicklinks:{
-				id: 'quicklinks',
-				name: 'Quicklinks',
-			},
-		}
-	},
-	
-	viewSite:{
-		id: 'viewSite',
-		name: 'View Site',
-	},
-
-}
-
 
 class Menu extends Component{
 	state = {
-		nav: navigation
+		nav:{
+			'af91214d-0462-43ce-b920-01dc1e14f126':{
+				name: 'About Us',
+				subItems: {
+					'4e9f38ab-3025-4cd1-bbe3-39097d800c27':{
+						name: 'Our Story',
+					},
+					'3b4c1303-ae0d-474b-b264-91187e0bde05':{
+						name: 'Mission',
+					},
+				}
+			},
+		}
 	}
 
 	_toggleSubNav = id => {

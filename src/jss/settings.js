@@ -14,3 +14,9 @@ export const theme_1 = {
 	color_3: '#6ed395',
 	bg_color_3: '#0a331a',
 }
+
+
+export const ui_colours = {
+	white: '#fff',
+	black: '#010f11',
+}

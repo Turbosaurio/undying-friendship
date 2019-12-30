@@ -11,7 +11,7 @@ const UISettings = ({widgetSettings, setWidgets}) => {
 			<select default-value={widgetSettings.summaryLayout} onChange={ e => {
 				setWidgets({component: 'widgets', key: 'summaryLayout', data: e.target.value})
 			}}>
-				<option value={'horizontal'} selected="true">horizontal</option>
+				<option value={'horizontal'}>horizontal</option>
 				<option value={'vertical'} >vertical</option>
 			</select>
 
@@ -24,9 +24,6 @@ const UISettings = ({widgetSettings, setWidgets}) => {
 				<option value={4}>4</option>
 			</select>
 
-			<button onClick={ _ => {
-				setWidgets(test)
-			}}>change</button>
 		</div>
 	)
 }

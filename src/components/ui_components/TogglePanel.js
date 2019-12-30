@@ -2,69 +2,84 @@ import React, {useState} from 'react'
 import {createUseStyles} from 'react-jss'
 
 import * as mixins from '../../jss/mixins'
+import * as settings from '../../jss/settings'
+
+const {white, black} = settings.ui_colours
+const {small, mid, large} = settings.viewports
+
 
 const panelJSS = createUseStyles({
 
-	panel_container:{
-		boxSizing: 'border-box',
-		padding: 10,
-		backgroundColor: 'white',
-		color: 'black',
-	},
-
-	panel_header:{
-		...mixins.flexAll('row', 'space-between', 'center'),
-	},
-
-	panel_inner:{
-		...mixins.flexAll('row', 'center', 'center', 'wrap'),
-		'&>*':{
-			display: 'block',
-			margin: [10, 5, 0]
-		}
-	},
-
-	panel_label:{
-		fontWeight: 700
-	},
-
-	button: props => ({
+	panel_button:{
+		...mixins.buttonHideText(),
+		...mixins.makeCircle(32),
+		marginLeft: 'auto',
 		position: 'relative',
-		border: 'none',
-		padding: 0,
-		backgroundColor: 'transparent',
-		overflow: 'hidden',
-		width: props.size,
-		height: props.size,
+		backgroundColor: white,
+		'&.close':{
+			...mixins.pseudosCross(black),
+			// backgroundColor: black,
+		},
+		'&.open':{
+			...mixins.hamburgerGradient(16, 12, black),
+		},
+	},
+
+	ui_panel:{
+		'z-index': 9999,
+		position: 'fixed',
+		padding: 10,
+		boxSizing: 'border-box',
+		'&.open':{
+			color: white,
+			backgroundColor: black,
+		},
+		...mixins.respondToMax(large, {
+			height: 50,
+			width: '100%',
+			left: 0,
+			'&.open':{
+				height: 'auto'
+			},
+			'&.left':{
+				top: 0,
+			},
+			'&.right':{
+				bottom: 0,
+				'&.open':{
+					maxHeight: '50vh',
+				}
+			},
+		}),
+		...mixins.respondTo(large, {
+			top: 0,
+			height: '100vh',
+			transition: '.25s',
+			width: 52,
+			'&.open':{
+				width: large / 2,
+			},
+
+			'&.left':{
+				left: 0,
+			},
+			'&.right':{
+				right: 0,
+			},
+		}),
 		
-	})
+	},
 })
 
-const TogglePanel = ({name, children, initial}) => {
-	const [status, toggleStatus] = useState(initial)
-	const [icon, toggleIcon] = useState('X')
-
-	function toggle(){
-		toggleStatus(!status)
-		if(icon === 'X'){
-			toggleIcon('O')
-		} else {
-			toggleIcon('X')
-		}
-	}
-	const title = status ? 'open' : 'closed'
-
-	const jss = panelJSS({size: 20})
+const TogglePanel = ({side, children, status, clickFunction}) => {
+	const panelClass = status ? 'open' : 'closed'
+	const buttonVerb = status ? 'close' : 'open'
+	const jss = panelJSS()
 
 	return(
-		<div className={jss.panel_container}>
-			<div className={jss.panel_header}>
-				<div>{name}</div>
-				<button className={jss.button} title={title} onClick={toggle}>{icon}</button>
-			</div>
-			<div className={jss.panel_inner}>
-				{status && children}
-			</div>
+		<div className={`${jss.ui_panel} ${side} ${panelClass}`}>
+			<button className={`${jss.panel_button} ${buttonVerb}`} title={buttonVerb} onClick={clickFunction} />
+			{status && children}
 		</div>
 	)
 }
