@@ -17,7 +17,7 @@ const SiteBody = ({mongo}) =>{
 					return(
 						<Row key={rowID} {...rowSettings}>
 							{widgets_list.map(widgetID =>
-								<Widget key={widgetID} contents={widgets[widgetID].contents}/>)
+								<Widget key={widgetID} {...widgets[widgetID]}/>)
 							}
 						</Row>
 					)

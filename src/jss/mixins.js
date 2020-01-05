@@ -189,10 +189,10 @@ export const respondTo = (min, obj) => {
 }
 
 
-export const hover = (content, descriptor = '') => {
-	const des = descriptor === '' ? '' : `,&:${descriptor}`
+export const hover = (content, descriptor = null) => {
+	const des = descriptor === null ? '' : `,&:${descriptor}`
 	return{
-		[`&:hover,&:focus${des}`]:{
+		[`&:hover,&:focus,&.open${des}`]:{
 			...content,
 		}
 	}

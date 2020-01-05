@@ -1,7 +1,6 @@
 import {
 	GET_MONGO_STUFF,
-	TOGGLE_MONGO_PROP,
-	SETTINGS_KEYS,
+	WIDGET_SETTINGS_KEYS,
 } from '../actions/mongo'
 
 export default function mongo(
@@ -23,23 +22,22 @@ export default function mongo(
 				...state,
 				...action.val
 			}
-		case TOGGLE_MONGO_PROP:
-			return{
-				...state,
-				[action.val] : !state[action.val]
-			}
+		
 
-		case SETTINGS_KEYS:
+		case WIDGET_SETTINGS_KEYS:
+			/// id, key, data
 			return{
 				...state,
-				settings:{
-					...state.settings,
-					[action.val.component]:{
-						...state.settings[action.val.component],
-						[action.val.key] : action.val.data
+				widgets:{
+					...state.widgets,
+					[action.val.id]: {
+						...state.widgets[action.val.id],
+						widgetSettings:{
+							...state.widgets[action.val.id].widgetSettings,
+							[action.val.key]: action.val.data
+						}
 					}
 				}
-
 			}
 		default: return state
 	}

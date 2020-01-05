@@ -1,43 +1,47 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
 
-import {settingsChange} from '../../redux/actions/mongo'
+import {widgetSettingsChange} from '../../redux/actions/mongo'
+import {createUseStyles} from  'react-jss'
 
-const UISettings = ({widgetSettings, setWidgets}) => {
+
+const UISettings = ({DBWidgets, setWidgetKey}) => {
+
+	const dbarr = Object.keys(DBWidgets)
+	const [widgetId, setWidgetId] = useState(dbarr[0])
+
 	return(
 		<div>
 			<h1>Settings</h1>
-
-			<select default-value={widgetSettings.summaryLayout} onChange={ e => {
-				setWidgets({component: 'widgets', key: 'summaryLayout', data: e.target.value})
+			<h2>Widget Settings</h2>
+			<h3>{widgetId}</h3>
+			<select defaultValue={widgetId} onChange={ e => {
+				setWidgetId(e.target.value)
 			}}>
-				<option value={'horizontal'}>horizontal</option>
-				<option value={'vertical'} >vertical</option>
+				{ dbarr.map( w => <option key={w} value={w}>{DBWidgets[w].contents.name}</option>)}
 			</select>
-
-			<select default-value={widgetSettings.listColumns} onChange={ e => {
-				setWidgets({component: 'widgets', key: 'listColumns', data: parseInt(e.target.value)})
+			<select defaultValue="horizontal" onChange={ e => {
+				setWidgetKey(widgetId, 'summaryLayout', e.target.value)
 			}}>
-				<option value={1}>1</option>
-				<option value={2}>2</option>
-				<option value={3}>3</option>
-				<option value={4}>4</option>
+				<option value="horizontal">Horizontal</option>
+				<option value="vertical">Vertical</option>
 			</select>
-
-		</div>
+		</div>		
 	)
 }
 
 
 const mapStateToProps = ({mongo}) => {
-	const widgetSettings = mongo.settings.widgets
-
-	return {widgetSettings}
+	const DBWidgets = mongo.widgets
+	return {DBWidgets}
 }
 
 const mapDispatchToProps = dispatch => {
 	return{
-		setWidgets: props => { dispatch(settingsChange(props))}
+		setWidgetKey: (id, key, data) => {
+			// TODO save in database
+			dispatch(widgetSettingsChange({id, key, data}))
+		}
 	}
 }
 

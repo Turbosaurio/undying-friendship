@@ -34,6 +34,12 @@ export const siteColors = createUseStyles({
 
 
 export const rowStyles = createUseStyles({
+	
+	row: props => ({
+		width: '100%',
+		boxSizing: 'border-box',
+		padding: [0, props.margin],
+	}),
 
 	hidden_header:{
 		...mixins.hidden(),
@@ -43,14 +49,6 @@ export const rowStyles = createUseStyles({
 		textAlign: 'center',
 	},
 
-	row:{
-		width: '100%'
-	},
-
-	row_padded:{
-		boxSizing: 'border-box',
-		padding: [0, 10]
-	},
 
 	row_inner:{
 		...mixins.respondTo(mid, {

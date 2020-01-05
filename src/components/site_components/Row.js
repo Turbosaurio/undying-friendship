@@ -1,11 +1,11 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
 import {rowStyles} from '../../jss/site'
 
-const Row = ({children, showTitle, title, constrain}) =>{
 
-	const jss = rowStyles()
-
+const Row = ({rowSettings, children, showTitle, title, constrain}) =>{
+	const jss = rowStyles(rowSettings)
 	return(
 		<div className={jss.row}>
 			<h2 className={`${jss.row_title} ${!showTitle && jss.hidden_header}`}>{title}</h2>
@@ -16,5 +16,9 @@ const Row = ({children, showTitle, title, constrain}) =>{
 	)
 }
 
+const mapStateToProps = ({mongo}) => ({
+	rowSettings: mongo.settings.rows
+})
 
-export default Row
+
+export default connect(mapStateToProps)(Row)

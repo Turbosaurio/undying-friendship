@@ -1,3 +1,13 @@
+const defaultWidgetSettings = {
+	widgetSettings:{
+		colorScheme: 'a_a',
+		imageShape: 'square',
+		summaryLayout: 'horizontal',
+		listColumns: 2,
+		widgetSpacing: 15,
+	}
+}
+
 const defaultContents = {
 	img:{
 		show: "true",
@@ -51,18 +61,21 @@ export const mongoSample = {
 
 	widgets: {
 		'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61':{
+			...defaultWidgetSettings,
 			contents: {
 				name: 'widget reinhold',
 				...defaultContents,
 			},
 		},
 		'2500e0e7-ac1d-40f8-8146-9294638ed744':{
+			...defaultWidgetSettings,
 			contents: {
 				name: 'widget jabi',
 				...defaultContents,
 			},
 		},
 		'1d2ffe76-a7bd-43b8-a832-69e32b994415':{
+			...defaultWidgetSettings,
 			contents: {
 				name: 'widget peter',
 				...defaultContents,
@@ -70,33 +83,20 @@ export const mongoSample = {
 		},
 
 		'f39841d2-0b9a-42ba-9a5e-5740cac24234':{
+			...defaultWidgetSettings,
 			contents: {
 				name: 'widget sanic',
 				...defaultContents,
 			},
 		},
 		'0d2b89fa-b9f4-463a-b863-224e145e9b2a':{
+			...defaultWidgetSettings,
 			contents: {
 				name: 'widget kerouac',
 				...defaultContents,
 			},
 		},
 	},
-	settings:{
-		rows:{
-			margin: 10,
-		},
-		columns:{
-			margin: 10,
-		},
-		widgets:{
-			colorScheme: 'a_a',
-			imageShape: 'square',
-			summaryLayout: 'horizontal',
-			listColumns: 2,
-			widgetSpacing: 15,
-		}
-	}
 }
 
 
@@ -104,7 +104,7 @@ export const mongoSample = {
 function _getMongoStuff(){
 	// TODO fetch stuff rom mongo
 	return new Promise((res, rej) => {
-		setTimeout( _ => res({...mongoSample}), 100)
+		setTimeout( _ => res({...mongoSample}), 1000)
 	})
 }
 
