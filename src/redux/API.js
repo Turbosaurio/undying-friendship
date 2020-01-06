@@ -1,6 +1,6 @@
 const defaultWidgetSettings = {
 	widgetSettings:{
-		colorScheme: 'a_a',
+		colorScheme: 'bg_1',
 		imageShape: 'square',
 		summaryLayout: 'horizontal',
 		listColumns: 2,
@@ -9,6 +9,10 @@ const defaultWidgetSettings = {
 }
 
 const defaultContents = {
+	title:{
+		show: true,
+		text: 'title 1'
+	},
 	img:{
 		show: "true",
 		alt: 'forrest gump running',

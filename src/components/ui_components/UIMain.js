@@ -4,7 +4,7 @@ import UITogglePanel from './UITogglePanel'
 import UIMenu from './UIMenu'
 import UISettings from './UISettings'
 
-const UIMain = (props) => {
+const UIMain = _ => {
 
 	const [state, setState] = useState({
 		windowWidth: window.innerWidth,

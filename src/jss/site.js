@@ -10,25 +10,21 @@ const {large, mid, small} = viewports
 
 
 export const siteColors = createUseStyles({
-	coloring_a_a: theme =>({
-		backgroundColor: theme.bg_color_1,
-		color: theme.color_1
+	coloring_bg_1: theme =>({
+		backgroundColor: theme.bg_1,
+		color: 'white'
 	}),
-	coloring_a_b: theme =>({
-		backgroundColor: theme.bg_color_1,
-		color: theme.color_2
+	coloring_bg_2: theme =>({
+		backgroundColor: theme.bg_2,
+		color: 'white'
 	}),
-	coloring_b_b: theme =>({
-		backgroundColor: theme.bg_color_2,
-		color: theme.color_2,
+	coloring_bg_3: theme =>({
+		backgroundColor: theme.bg_3,
+		color: 'white'
 	}),
-	coloring_b_c: theme =>({
-		backgroundColor: theme.bg_color_2,
-		color: theme.color_3,
-	}),
-	coloring_c_c: theme =>({
-		backgroundColor: theme.bg_color_3,
-		color: theme.color_3
+	coloring_bg_4: theme =>({
+		backgroundColor: theme.bg_4,
+		color: 'white'
 	}),
 })
 

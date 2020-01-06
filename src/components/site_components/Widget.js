@@ -14,12 +14,10 @@ const Widget = ({contents, widgetSettings}) => {
 	const jss = widgetStyles(jssProps)
 
 	const jssColors = siteColors({
-		bg_color_1: '#ef2c13',
-		color_1: '#fff',
-		bg_color_2: '#134aef',
-		color_2: '#fff',
-		bg_color_3: '#ef1334',		
-		color_3: '#fff',
+		bg_1: '#0f3559',
+		bg_2: '#36422f',
+		bg_3: '#8e1f1f',
+		bg_4: '#4b5e50',
 	})
 
 	// useEffect( _ => {
