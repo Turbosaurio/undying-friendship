@@ -33,18 +33,21 @@ export const rowStyles = createUseStyles({
 	
 	row: props => ({
 		width: '100%',
-		boxSizing: 'border-box',
-		padding: [0, props.margin],
+		paddingRight: props.rowSpacing,
 	}),
 
-	hidden_header:{
-		...mixins.hidden(),
-	},
+	row_padded: props => ({
+		boxSizing: 'border-box',
+		paddingLeft: props.rowSpacing,
+	}),
 
 	row_title:{
 		textAlign: 'center',
 	},
 
+	hidden_header:{
+		...mixins.hidden(),
+	},
 
 	row_inner:{
 		...mixins.respondTo(mid, {

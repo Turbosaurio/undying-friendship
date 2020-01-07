@@ -1,5 +1,6 @@
 import {
 	GET_MONGO_STUFF,
+	ROW_SETTINGS_KEYS,
 	WIDGET_SETTINGS_KEYS,
 } from '../actions/mongo'
 
@@ -22,7 +23,22 @@ export default function mongo(
 				...state,
 				...action.val
 			}
-		
+
+		case ROW_SETTINGS_KEYS:
+			/// id, key, data
+			return{
+				...state,
+				rows:{
+					...state.rows,
+					[action.val.id]: {
+						...state.rows[action.val.id],
+						rowSettings:{
+							...state.rows[action.val.id].rowSettings,
+							[action.val.key]: action.val.data
+						}
+					}
+				}
+			}
 
 		case WIDGET_SETTINGS_KEYS:
 			/// id, key, data

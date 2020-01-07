@@ -1,68 +1,89 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
 
-import {widgetSettingsChange} from '../../redux/actions/mongo'
-import {createUseStyles} from  'react-jss'
+import {rowSettingsChange, widgetSettingsChange} from '../../redux/actions/mongo'
 import UISwitchSelector from './UISwitchSelector'
 
 
-const UISettings = ({DBWidgets, setWidgetKey}) => {
+const UISettings = ({rows, widgets, updateRowInStore, updateWidgetInStore}) => {
 
-	const dbarr = Object.keys(DBWidgets)
-	const [currentWidget, setCurrentWidget] = useState({
-		id: '',
-		settings: {}
+	const [state, setState] = useState({
+		row:{
+			current: '',
+		},
+		widget:{
+			current: '',
+		}
 	})
 
-	const changeCurrentWidget = id => {
-		setCurrentWidget( state => ({
+	const changeComponent = (component, id) => {
+		setState( state => ({
 			...state,
-			id,
-			settings: DBWidgets[id].widgetSettings,
+			[component]:{
+				...state[component],
+				current: id
+			}
 		}))
 	}
-	
-	const {id, settings} = currentWidget
 
-	const setSummaryLayout = val => {
-		setWidgetKey(id, 'summaryLayout', val)
+
+	const setRowKey = (key, data) => {
+		updateRowInStore(state.row.current, key, data)
 	}
+	const setRowConstrain = data => { setRowKey('constrain', data) }
+	const setRowTitle = data => { setRowKey('showTitle', data) }
 
-	
+
+	const setWidgetKey = (key, data) => {
+		updateWidgetInStore(state.widget.current, key, data)
+	}
+	const setSummaryLayout = data => { setWidgetKey('summaryLayout', data) }
+	const setListCols = data => { setWidgetKey('listColumns', data) }
+	const setWidgetColor = data => { setWidgetKey('colorScheme', data) }
+
+
+	const {row, widget} = state
 
 	return(
 		<div>
 			<h1>Settings</h1>
+
+			<h2>Row Settings</h2>
+			<select onChange={ e => {
+				changeComponent('row',e.target.value)
+			}}>
+				{ Object.keys(rows).map( r => <option key={r} value={r}>{rows[r].rowSettings.title}</option>)}
+			</select>
+			<span>{` ${row.current}`}</span>
+			{
+				row.current !== ''
+				?	<div>
+					<h3>Row constrain</h3>
+					<UISwitchSelector list={['yes','no']} action={setRowConstrain}/>
+					<h3>Show Title</h3>
+					<UISwitchSelector list={['yes','no']} action={setRowTitle}/>
+				</div>
+				: <span>Please select a row</span>
+			}
+
+
 			<h2>Widget Settings</h2>
 			<select onChange={ e => {
-				changeCurrentWidget(e.target.value)
+				changeComponent('widget',e.target.value)
 			}}>
-				{ dbarr.map( w => <option key={w} value={w}>{DBWidgets[w].contents.name}</option>)}
+				{ Object.keys(widgets).map( w => <option key={w} value={w}>{widgets[w].contents.name}</option>)}
 			</select>
-			<span>{` ${id}`}</span>
+			<span>{` ${widget.current}`}</span>
 
 			{
-				id
+				widget.current !== ''
 					? <div>
+						<h3>Summary Layout</h3>
 						<UISwitchSelector list={['horizontal','vetical']} action={setSummaryLayout}/>
-					
-						<select defaultValue={1} onChange={ e => {
-							setWidgetKey(id, 'listColumns', e.target.value)
-						}}>
-							<option value={1}>1</option>
-							<option value={2}>2</option>
-							<option value={3}>3</option>
-							<option value={4}>4</option>
-						</select>
-						<select defaultValue="a_a" onChange={ e => {
-							setWidgetKey(id, 'colorScheme', e.target.value)
-						}}>
-							<option value="bg_1">blue</option>
-							<option value="bg_2">green</option>
-							<option value="bg_3">red</option>
-							<option value="bg_4">greenblue</option>
-						</select>
-
+						<h3>List Columns</h3>
+						<UISwitchSelector list={[1,2,3,4]} action={setListCols}/>
+						<h3>Widget background colour</h3>
+						<UISwitchSelector list={['bg_1','bg_2','bg_3','bg_4']} action={setWidgetColor}/>
 						<form>
 							<input type="checkbox"/><label>Has title</label>
 							<input type="checkbox"/><label>Has summary</label>
@@ -79,16 +100,20 @@ const UISettings = ({DBWidgets, setWidgetKey}) => {
 
 
 const mapStateToProps = ({mongo}) => {
-	const DBWidgets = mongo.widgets
-	return {DBWidgets}
+	const {rows, widgets} = mongo
+	return {rows, widgets}
 }
 
 const mapDispatchToProps = dispatch => {
 	return{
-		setWidgetKey: (id, key, data) => {
+		updateRowInStore: (id, key, data) => {
+			// TODO save in database
+			dispatch(rowSettingsChange({id, key, data: data === 'yes' ? true : false}))
+		},
+		updateWidgetInStore: (id, key, data) => {
 			// TODO save in database
 			dispatch(widgetSettingsChange({id, key, data}))
-		}
+		},
 	}
 }
 

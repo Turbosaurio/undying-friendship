@@ -8,6 +8,12 @@ const defaultWidgetSettings = {
 	}
 }
 
+const defaultRowSettings = {
+	constrain: true,
+	showTitle: true,
+	rowSpacing: 10,
+}
+
 const defaultContents = {
 	title:{
 		show: true,
@@ -31,37 +37,30 @@ const defaultContents = {
 
 
 export const mongoSample = {
-	rows: [
-		{
-			'c921a9cd-44c8-4584-9be2-bb67bd8f3645':{
-				rowSettings:{
-					constrain: true,
-					showTitle: true,
-					title: 'Row 1',
-				},
-				widgets_list: [
-					'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61',
-					'2500e0e7-ac1d-40f8-8146-9294638ed744',
-					// '1d2ffe76-a7bd-43b8-a832-69e32b994415',
-				],
-				widgets_list_size : [1,1,2]
-			}
+	rows: {
+		'c921a9cd-44c8-4584-9be2-bb67bd8f3645':{
+			rowSettings:{
+				title: 'Row 1',
+				...defaultRowSettings,
+			},
+			widgets_list: [
+				'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61',
+				'2500e0e7-ac1d-40f8-8146-9294638ed744',
+				'1d2ffe76-a7bd-43b8-a832-69e32b994415',
+			],
 		},
-		{
-			'00ad6003-4b5d-4877-af37-1cf6042f74fe':{
-				rowSettings:{
-					constrain: true,
-					showTitle: true,
-					title: 'Row 2',
-				},
-				widgets_list:[
-					'f39841d2-0b9a-42ba-9a5e-5740cac24234',
-					'0d2b89fa-b9f4-463a-b863-224e145e9b2a',
-				],
-				widgets_list_size : [1,1]
-			}
-		},
-	],
+		'00ad6003-4b5d-4877-af37-1cf6042f74fe':{
+			rowSettings:{
+				title: 'Row 2',
+				...defaultRowSettings,
+			},
+			widgets_list:[
+				'f39841d2-0b9a-42ba-9a5e-5740cac24234',
+				'0d2b89fa-b9f4-463a-b863-224e145e9b2a',
+			],
+		}
+	},
+
 
 	widgets: {
 		'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61':{

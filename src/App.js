@@ -1,4 +1,4 @@
-import React,{Fragment, useState, useEffect} from 'react'
+import React,{Fragment, useEffect} from 'react'
 import {connect} from 'react-redux'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import './css/main.css'
@@ -32,7 +32,7 @@ const Site = _ =>{
 }
 
 const App = ({init, loading}) =>{
-	useEffect( _ => {init()}, [loading])
+	useEffect( _ => {init()}, [init])
 	return (
 		<Fragment>
 			<LoadingBar />

@@ -1,7 +1,6 @@
-import React, {Component, Fragment} from 'react'
+import React, {Fragment} from 'react'
 import {createUseStyles} from 'react-jss'
 import {NavLink} from 'react-router-dom'
-import connect_jss from '../../jss/connect_jss'
 import * as mixins from '../../jss/mixins'
 
 const menuStyles = createUseStyles({

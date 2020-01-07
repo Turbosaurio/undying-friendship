@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {siteColors, widgetStyles} from '../../jss/site'
 
 const Widget = ({contents, widgetSettings}) => {
@@ -19,12 +19,6 @@ const Widget = ({contents, widgetSettings}) => {
 		bg_3: '#8e1f1f',
 		bg_4: '#4b5e50',
 	})
-
-	// useEffect( _ => {
-	// 	const rule = sheet.getRule('list_grid')
-	// 	jss.deleteRule('list_grid').addRule(rule)
-	// }, [listColumns])
-
 
 	return(
 		<section className={jss.col_fill}>

@@ -19,4 +19,5 @@ export const theme_1 = {
 export const ui_colours = {
 	white: '#fff',
 	black: '#010f11',
+	inactive: '#2a282d',
 }

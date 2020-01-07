@@ -1,14 +1,17 @@
 import React, {useState} from 'react'
 import {createUseStyles} from 'react-jss'
 import * as mixins from '../../jss/mixins'
+import {ui_colours} from '../../jss/settings'
+
+const{ black, white, inactive} = ui_colours
 
 const switchStyles = createUseStyles({
 	list:{
 		marginTop: 10,
 		...mixins.flexedGrid(
-			{cols: 3, margin: 10},
-			{cols: 3, margin: 10},
-			{cols: 3, margin: 10},
+			{cols: 5, margin: 10},
+			{cols: 5, margin: 10},
+			{cols: 5, margin: 10},
 		)
 	},
 
@@ -17,10 +20,10 @@ const switchStyles = createUseStyles({
 		textAlign: 'center',
 		color: 'white',
 		boxSizing: 'border-box',
-		border: '2px solid white',
+		border: `2px solid ${inactive}`,
 		backgroundColor: 'transparent',
 		'&.active':{
-			borderColor: 'red'
+			borderColor: white
 		}
 	}
 
