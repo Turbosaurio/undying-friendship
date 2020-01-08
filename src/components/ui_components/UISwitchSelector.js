@@ -9,14 +9,14 @@ const switchStyles = createUseStyles({
 	list:{
 		marginTop: 10,
 		...mixins.flexedGrid(
-			{cols: 5, margin: 10},
-			{cols: 5, margin: 10},
-			{cols: 5, margin: 10},
+			{cols: 6, margin: 10},
+			{cols: 6, margin: 10},
+			{cols: 6, margin: 10},
 		)
 	},
 
 	option:{
-		padding: [25, 0],
+		padding: [15, 0],
 		textAlign: 'center',
 		color: 'white',
 		boxSizing: 'border-box',
@@ -31,7 +31,7 @@ const switchStyles = createUseStyles({
 
 const UISwitchSelector = props => {
 
-	const {list, action} = props
+	const {thumbnails, list, action} = props
 	const jss = switchStyles()
 
 	const [currentAction, setCurrent] = useState(list[0])
@@ -40,14 +40,19 @@ const UISwitchSelector = props => {
 		<div className={jss.list}>
 			{
 				list.map((option, i) =>{
-					return <button
+					return (<button
 						key={i}
 						onClick={ _ => {
 							setCurrent(option)
 							action(option)
 						}}
 						className={`${jss.option} ${option === currentAction ? 'active' : 'inactive'}`}
-					>{option}</button>
+					>
+					{thumbnails
+						? <img style={{display: 'block', width: '100%'}} src={`/thumbnails/${thumbnails}${option}.png`} atl={`image for option ${option} layout`} />
+						: <span>{option}</span>
+					}
+					</button>)
 				})
 			}
 		</div>

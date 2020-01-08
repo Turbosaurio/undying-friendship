@@ -20,25 +20,7 @@ export const hidden = _ =>{
 	}
 }
 
-export const pseudo = (pseudo = 'before', obj) =>{
-	return{
-		[`&:${pseudo}`]:{
-			...obj,
-			content: '""',
-			display: 'block',
-		}
-	}
-}
 
-export const pseudoBoth = obj => {
-	return{
-		'&:before,&:after':{
-			content: '""',
-			display: 'block',
-			...obj,
-		}
-	}
-}
 
 
 export const strippedList = _ =>{
@@ -81,27 +63,60 @@ export const makeCircle = size => {
 
 export const widthConstrain = maxWidth => {
 	return{
+		maxWidth,
 		width: '100%',
-		margin:{left: 'auto', right: 'auto'},
-		maxWidth
+		marginLeft: 'auto',
+		marginRight: 'auto',
 	}
 }
 
-export const mask = (pseudo, rest) => {
+
+export const fullSize = _ => ({
+	display: 'block',
+	position: 'absolute',
+	top: 0,
+	left: 0,
+	width: '100%',
+	height: '100%',
+})
+
+export const pseudo = (position = 'before', rest) =>{
 	return{
-		//todo mask
-		hola: 'kek',
-		...rest
+		[`&:${position}`]:{
+			...rest,
+			content: '""',
+			display: 'block',
+		}
 	}
 }
 
-export const maskFullsize = (pseudo, rest) => {
+export const pseudoBoth = rest => {
 	return{
-		//todo mask with full size
-		...mask(),
-		...rest
+		'&:before,&:after':{
+			content: '""',
+			display: 'block',
+			...rest,
+		}
 	}
 }
+
+export const mask = (position = 'before', rest) => ({
+	position: 'relative',
+	...pseudo(position, {
+		position: 'absolute',
+		...rest
+	})
+})
+
+export const maskFullsize = (position = 'before', rest) => ({
+	...mask(position, {
+		top: 0,
+		left: 0,
+		width: '100%',
+		height: '100%',
+		...rest
+	})
+})
 
 export const pseudosCross = color => {
 	return{
@@ -306,3 +321,13 @@ export const invertTheme = theme => {
 
 	}
 }
+
+
+export const bgCover = _ => ({
+	background:{
+		position: 'center center',
+		repeat: 'no-repeat',
+		size: 'cover',
+	}
+})
+

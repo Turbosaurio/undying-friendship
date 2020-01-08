@@ -34,6 +34,7 @@ export const rowStyles = createUseStyles({
 	row: props => ({
 		width: '100%',
 		paddingRight: props.rowSpacing,
+		marginTop: props.rowSpacing * 2,
 	}),
 
 	row_padded: props => ({
@@ -42,7 +43,13 @@ export const rowStyles = createUseStyles({
 	}),
 
 	row_title:{
-		textAlign: 'center',
+		...mixins.widthConstrain(large),
+		textAlign: 'left',
+		textTransform: 'uppercase',
+		fontSize: 40,
+		marginTop: 0,
+		marginBottom: props => props.rowSpacing,
+
 	},
 
 	hidden_header:{
@@ -62,12 +69,11 @@ export const rowStyles = createUseStyles({
 
 
 export const widgetStyles = createUseStyles({
-	// props:{margin,cols}
+
 	list_grid: props => ({
-		marginTop: props.margin,
 		...mixins.flexedGrid(
 			{cols: 1, margin: props.margin},
-			{cols: 1, margin: props.margin},
+			{cols: 2, margin: props.margin},
 		),
 	}),
 
@@ -120,7 +126,7 @@ export const widgetStyles = createUseStyles({
 	col_inner: props =>({
 		boxSizing: 'border-box',
 		padding: props.margin,
-		border: '1px solid white',
+		
 	}),
 
 	item:{
@@ -132,28 +138,70 @@ export const widgetStyles = createUseStyles({
 		fontSize: '2rem',
 	},
 
+	item_name:{
+		fontSize: 32,
+		textTransform: 'uppercase',
+		marginBottom: props => props.margin,
+	},
+
 	item_summary:{
-		marginTop: 10,
+		marginBottom: props => props.margin,
 		'& h3':{ marginTop: 0}
 	},
 
-	item_horizontal_summary: props => ({
-		...mixins.flexAll('row', 'center', 'stretch', 'wrap'),
-		'&>*':{
-			...mixins.respondToMax(mid, {
-				width: '100%',
-				'&:not(:first-child)':{
-					marginTop: props.margin
-				}
-			}),
-			...mixins.respondTo(mid, {
-				flex: 1,
-				'&:not(:first-child)':{
-					marginLeft: props.margin
-				}
-			})
+	item_inner_row:{
+		...mixins.flexAll('row', 'center', 'stretch'),
+		'&> *':{
+			flexGrow: 1,
+			flexBasis: '50%',
+		},
+		'&> *:not(:first-child)':{
+			marginLeft: props => props.margin
+		},
+	},
+
+	item_summary_background:{
+		backgroundSize: 'cover',
+		boxSizing: 'border-box',
+		padding: props => props.margin * 2,
+		color: 'white',
+		...mixins.maskFullsize('before',{
+			backgroundColor: 'rgba(15,15,15,.75)',
+		}),
+		'&> *':{
+			position: 'relative',
+		}
+	},
+
+	item_summary_a:{
+		
+	},
+
+	item_summary_b: props => ({
+		
+	}),
+
+	item_summary_c: props => ({
+		'&> div:not(:first-child)':{
+			marginTop: props.margin,
+		},
+		'& h3':{
+			textAlign: 'right',
 		}
 	}),
+
+	item_summary_d: props => ({
+		'&> *:not(:first-child)':{
+			marginTop: props.margin,
+		},
+	}),
+
+	item_summary_e: props => ({
+		'&> div:not(:first-child)':{
+			marginTop: props.margin,
+		},
+	}),
+
 
 	item_vertical_summary:{
 		display: 'block',
@@ -164,12 +212,15 @@ export const widgetStyles = createUseStyles({
 		padding: 16,
 	},
 
+	image_holder:{
+		alignSelf: 'stretch'
+	},
+
 	image: props => ({
 		display: 'block',
 		width: '100%',
-		marginBottom: props.margin,
-		borderRadius: 10,
-		alignSelf: 'flex-start'
+		height: '100%',
+		objectFit: 'cover',
 	})
 })
 

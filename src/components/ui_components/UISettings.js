@@ -79,7 +79,7 @@ const UISettings = ({rows, widgets, updateRowInStore, updateWidgetInStore}) => {
 				widget.current !== ''
 					? <div>
 						<h3>Summary Layout</h3>
-						<UISwitchSelector list={['horizontal','vetical']} action={setSummaryLayout}/>
+						<UISwitchSelector thumbnails="summary_layout_" list={['a','b','c','d','e','f']} action={setSummaryLayout}/>
 						<h3>List Columns</h3>
 						<UISwitchSelector list={[1,2,3,4]} action={setListCols}/>
 						<h3>Widget background colour</h3>
