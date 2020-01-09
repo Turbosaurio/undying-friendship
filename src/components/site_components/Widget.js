@@ -20,10 +20,12 @@ const Widget = ({contents, widgetSettings}) => {
 		bg_4: '#4b5e50',
 	})
 
-	const wTitle = <h3 className={jss.item_name}>{name}</h3>
-	const wImage = showImage ? <div className={jss.image_holder}><img className={jss.image} {...img}/></div> : null
+	const wTitle = <h3 className={jss(['item_name'])}>{name}</h3>
+	const wImage = showImage ? <div className={jss(['image_holder'])}><img className={jss(['image'])} {...img}/></div> : null
 	const wExcerpt = <div show={excerpt.show.toString()}>{excerpt.text}</div>
 
+	const InnerRow = ({children}) => <div className={jss(['item_inner_row'])}>{children}</div>
+	const BackgroundSummary = ({children}) => <div className={jss(['item_summary_background'])} style={{backgroundImage: `url(${img.src})`}}>{children}</div>
 
 
 	const WidgetContents = _ => {
@@ -31,12 +33,12 @@ const Widget = ({contents, widgetSettings}) => {
 			case 'a': return (
 				<Fragment>
 					{wTitle}
-					<div className={jss.item_inner_row}>{wImage}{wExcerpt}</div>
+					<div className={jss(['item_inner_row'])}>{wImage}{wExcerpt}</div>
 				</Fragment>
 			)
 			case 'b': return (
 				<Fragment>
-					<div className={jss.item_inner_row}>
+					<div className={jss(['item_inner_row'])}>
 						{wImage}
 						<div>{wTitle}{wExcerpt}</div>
 					</div>
@@ -44,44 +46,53 @@ const Widget = ({contents, widgetSettings}) => {
 			)
 			case 'c': return (
 				<Fragment>
-					{wImage}
-					<div className={jss.item_inner_row}>{wTitle}{wExcerpt}</div>
+					<BackgroundSummary>{wTitle}</BackgroundSummary>
+					{wExcerpt}
 				</Fragment>
 			)
 			case 'd': return (
-				<Fragment>
+				<InnerRow>
 					{wTitle}
-					{wImage}
-					{wExcerpt}
-				</Fragment>
+					<BackgroundSummary>{wExcerpt}</BackgroundSummary>
+				</InnerRow>
 			)
 			case 'e': return (
 				<Fragment>
 					{wTitle}
-					<div className={jss.item_summary_background} style={{backgroundImage: `url(${img.src})`}}>{wExcerpt}</div>
+					<BackgroundSummary>{wExcerpt}</BackgroundSummary>
 				</Fragment>
 			)
 			case 'f': return (
-				<div className={jss.item_summary_background} style={{backgroundImage: `url(${img.src})`}}>
+				<BackgroundSummary>
 					{wTitle}{wExcerpt}
-				</div>
+				</BackgroundSummary>
 			)
 			default: return null
 		}
 	}
 
 	return(
-		<section className={jss.col_fill}>
-			<div className={`${jss.col_inner} ${jssColors[`coloring_${colorScheme}`]}`}>
-				<div className={`${jss[`item_summary_${summaryLayout}`]} ${jss.item_summary}`}>
+		<section className={jss(['col_fill'])}>
+			<div
+				className={`${jss(['col_inner'])} ${jssColors([`coloring_${colorScheme}`])}`}
+			>
+				<div
+					className={jss([`item_summary_${summaryLayout}`, 'item_summary'])}
+				>
 					<WidgetContents />
 					
 					
 				</div>
-				<div show={itemsList.show.toString()} className={`${jss.list_grid} ${jss[`list_grid_${listColumns}`]}`}>
+				<div
+					show={itemsList.show.toString()}
+					className={jss(['list_grid', `list_grid_${listColumns}`])}
+				>
 					{
 						itemsList.list.map( i =>
-							<div className={jss.item} key={i}>{i}</div>
+							<div className={jss(['list_item'])} key={i}>
+								<div>{i.name}</div>
+								<div>{i.text}</div>
+							</div>
 						)
 					}
 				</div>

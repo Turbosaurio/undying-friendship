@@ -9,14 +9,14 @@ const switchStyles = createUseStyles({
 	list:{
 		marginTop: 10,
 		...mixins.flexedGrid(
-			{cols: 6, margin: 10},
-			{cols: 6, margin: 10},
-			{cols: 6, margin: 10},
+			{cols: 3, margin: 10},
+			{cols: 3, margin: 10},
+			{cols: 3, margin: 10},
 		)
 	},
 
 	option:{
-		padding: [15, 0],
+		padding: 0,
 		textAlign: 'center',
 		color: 'white',
 		boxSizing: 'border-box',

@@ -31,7 +31,13 @@ const defaultContents = {
 	},
 	itemsList: {
 		show: "true",
-		list: [1,2,3,4,5,6,7,8],
+		list: [
+			{name: 1, text:'hola'},
+			{name: 2, text:'cola'},
+			{name: 3, text:'loca'},
+			{name: 4, text:'caol'},
+			{name: 5, text:'loac'},
+		],
 	},
 }
 
