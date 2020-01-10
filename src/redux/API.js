@@ -5,7 +5,8 @@ const defaultWidgetSettings = {
 		imageShape: 'square',
 		summaryLayout: 'a',
 		listColumns: 2,
-		widgetSpacing: 20,
+		widgetSpacing: 10,
+		slick: true,
 	}
 }
 
@@ -13,6 +14,10 @@ const defaultRowSettings = {
 	constrain: true,
 	showTitle: true,
 	rowSpacing: 20,
+}
+
+const columnDefaultSettings = {
+	margin: 10,
 }
 
 const defaultContents = {
@@ -42,7 +47,6 @@ const defaultContents = {
 }
 
 
-
 export const mongoSample = {
 	rows: {
 		'c921a9cd-44c8-4584-9be2-bb67bd8f3645':{
@@ -50,10 +54,9 @@ export const mongoSample = {
 				title: 'Row Contents 1',
 				...defaultRowSettings,
 			},
-			widgets_list: [
-				'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61',
-				'2500e0e7-ac1d-40f8-8146-9294638ed744',
-				// '1d2ffe76-a7bd-43b8-a832-69e32b994415',
+			columns_list:[
+				'4c8479c5-e9c9-403a-94d7-52b8a577e052',
+				'a12b3e61-8098-44a6-9088-59b3807b636f',
 			],
 		},
 		'00ad6003-4b5d-4877-af37-1cf6042f74fe':{
@@ -61,11 +64,49 @@ export const mongoSample = {
 				title: 'Row Contents 2',
 				...defaultRowSettings,
 			},
-			widgets_list:[
+			columns_list:[
+				'6db368d1-9231-4535-81a4-40e0ac27ad1d',
+				'53d6da9e-38c5-4b8f-8245-cbde44808555',
+			]
+		}
+	},
+
+	columns:{
+		'4c8479c5-e9c9-403a-94d7-52b8a577e052':{
+			columnSettings:{
+				...columnDefaultSettings,
+			},
+			widgets_list: [
+				'8c3875fb-8e8e-4ecc-a79f-d7bb75e07b61',
+			],
+		},
+		'a12b3e61-8098-44a6-9088-59b3807b636f':{
+			columnSettings:{
+				...columnDefaultSettings,
+			},
+			widgets_list: [
+				'2500e0e7-ac1d-40f8-8146-9294638ed744',
+				'1d2ffe76-a7bd-43b8-a832-69e32b994415',
+			],
+		},
+		'6db368d1-9231-4535-81a4-40e0ac27ad1d':{
+			columnSettings:{
+				...columnDefaultSettings,
+			},
+			widgets_list: [
 				'f39841d2-0b9a-42ba-9a5e-5740cac24234',
+			],
+		},
+		'53d6da9e-38c5-4b8f-8245-cbde44808555':{
+			columnSettings:{
+				...columnDefaultSettings,
+			},
+			widgets_list: [
 				'0d2b89fa-b9f4-463a-b863-224e145e9b2a',
+			
 			],
 		}
+
 	},
 
 

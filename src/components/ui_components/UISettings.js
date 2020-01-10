@@ -40,6 +40,7 @@ const UISettings = ({rows, widgets, updateRowInStore, updateWidgetInStore}) => {
 	const setSummaryLayout = data => { setWidgetKey('summaryLayout', data) }
 	const setListCols = data => { setWidgetKey('listColumns', data) }
 	const setWidgetColor = data => { setWidgetKey('colorScheme', data) }
+	const toggleSlick = data => { setWidgetKey('slick', data) }
 
 
 	const {row, widget} = state

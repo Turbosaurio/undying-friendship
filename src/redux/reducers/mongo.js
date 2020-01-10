@@ -6,13 +6,9 @@ import {
 
 export default function mongo(
 		state = {
-			rows: [],
+			rows: {},
+			columns: {},
 			widgets: {},
-			settings: {
-				rows:{},
-				columns:{},
-				widgets:{}
-			},
 		},
 		action
 	){

@@ -1,10 +1,13 @@
 import React, {Fragment} from 'react'
 import {siteColors, widgetStyles} from '../../jss/site'
+import Slider from 'react-slick'
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 
 const Widget = ({contents, widgetSettings}) => {
 
 	const {name, img, excerpt, itemsList} = contents
-	const {colorScheme, summaryLayout, listColumns, widgetSpacing, showImage} = widgetSettings
+	const {colorScheme, summaryLayout, listColumns, widgetSpacing, showImage, slick} = widgetSettings
 
 	const jssProps = {
 		margin: widgetSpacing,
@@ -20,9 +23,9 @@ const Widget = ({contents, widgetSettings}) => {
 		bg_4: '#4b5e50',
 	})
 
-	const wTitle = <h3 className={jss(['item_name'])}>{name}</h3>
-	const wImage = showImage ? <div className={jss(['image_holder'])}><img className={jss(['image'])} {...img}/></div> : null
-	const wExcerpt = <div show={excerpt.show.toString()}>{excerpt.text}</div>
+	const WidgetTitle = _ => <h3 className={jss(['item_name'])}>{name}</h3>
+	const WidgetImage = _ => showImage ? <div className={jss(['image_holder'])}><img className={jss(['image'])} src={img.src} alt={img.alt}/></div> : null
+	const WidgetExcerpt = _ => <div show={excerpt.show.toString()}>{excerpt.text}</div>
 
 	const InnerRow = ({children}) => <div className={jss(['item_inner_row'])}>{children}</div>
 	const BackgroundSummary = ({children}) => <div className={jss(['item_summary_background'])} style={{backgroundImage: `url(${img.src})`}}>{children}</div>
@@ -32,70 +35,82 @@ const Widget = ({contents, widgetSettings}) => {
 		switch(summaryLayout){
 			case 'a': return (
 				<Fragment>
-					{wTitle}
-					<div className={jss(['item_inner_row'])}>{wImage}{wExcerpt}</div>
+					<WidgetTitle/>
+					<InnerRow>
+						<WidgetImage/>
+						<WidgetExcerpt/>
+					</InnerRow>
 				</Fragment>
 			)
 			case 'b': return (
-				<Fragment>
-					<div className={jss(['item_inner_row'])}>
-						{wImage}
-						<div>{wTitle}{wExcerpt}</div>
+				<InnerRow>
+					<WidgetImage/>
+					<div>
+						<WidgetTitle/>
+						<WidgetExcerpt/>
 					</div>
-				</Fragment>
+				</InnerRow>
 			)
 			case 'c': return (
 				<Fragment>
-					<BackgroundSummary>{wTitle}</BackgroundSummary>
-					{wExcerpt}
+					<BackgroundSummary><WidgetTitle/></BackgroundSummary>
+					<WidgetExcerpt/>
 				</Fragment>
 			)
 			case 'd': return (
 				<InnerRow>
-					{wTitle}
-					<BackgroundSummary>{wExcerpt}</BackgroundSummary>
+					<WidgetTitle/>
+					<BackgroundSummary>
+						<WidgetExcerpt/>
+					</BackgroundSummary>
 				</InnerRow>
 			)
 			case 'e': return (
 				<Fragment>
-					{wTitle}
-					<BackgroundSummary>{wExcerpt}</BackgroundSummary>
+					<WidgetTitle/>
+					<BackgroundSummary>
+						<WidgetExcerpt/>
+					</BackgroundSummary>
 				</Fragment>
 			)
 			case 'f': return (
 				<BackgroundSummary>
-					{wTitle}{wExcerpt}
+					<WidgetTitle/>
+					<WidgetExcerpt/>
 				</BackgroundSummary>
 			)
 			default: return null
 		}
 	}
 
+
+	const list = itemsList.list.map( (i, x) =>
+		<div className={jss(['list_item'])} key={x}>
+			<div>{i.name}</div>
+			<div>{i.text}</div>
+		</div>
+	)
+
+	const slickSettings = {
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+	}
+
 	return(
-		<section className={jss(['col_fill'])}>
-			<div
-				className={`${jss(['col_inner'])} ${jssColors([`coloring_${colorScheme}`])}`}
-			>
-				<div
-					className={jss([`item_summary_${summaryLayout}`, 'item_summary'])}
-				>
+		<section>
+			<div className={jssColors([`coloring_${colorScheme}`])}>
+				<div className={jss([`item_summary_${summaryLayout}`, 'item_summary'])}>
 					<WidgetContents />
-					
-					
 				</div>
-				<div
-					show={itemsList.show.toString()}
-					className={jss(['list_grid', `list_grid_${listColumns}`])}
-				>
-					{
-						itemsList.list.map( i =>
-							<div className={jss(['list_item'])} key={i}>
-								<div>{i.name}</div>
-								<div>{i.text}</div>
-							</div>
-						)
-					}
-				</div>
+				{slick
+					? <Slider {...slickSettings}>{list}</Slider>
+					: <div show={itemsList.show.toString()} className={jss(['list_grid', `list_grid_${listColumns}`])}>
+						{list}
+					</div>
+				}
 			</div>
 		</section>
 	)
