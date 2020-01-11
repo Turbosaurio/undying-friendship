@@ -9,7 +9,7 @@ const UIMain = _ => {
 	const [state, setState] = useState({
 		windowWidth: window.innerWidth,
 		left: false,
-		right: true,
+		right: false,
 	})
 
 

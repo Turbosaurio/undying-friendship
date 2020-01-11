@@ -36,6 +36,7 @@ const UIMenu = _ =>{
 				<ul className={menuJSS.ui_menu_list}>
 					<li className={`${menuJSS.ui_nav_item}`}><NavLink to="/">Test</NavLink></li>
 					<li className={`${menuJSS.ui_nav_item}`}><NavLink to="/site">Site</NavLink></li>
+					<li className={`${menuJSS.ui_nav_item}`}><NavLink to="/questionary">Questionary Test</NavLink></li>
 				</ul>
 			</nav>
 		</Fragment>
