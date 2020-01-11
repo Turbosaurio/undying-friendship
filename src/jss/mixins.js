@@ -265,20 +265,21 @@ export const flexedGrid = (
 		mobile = {}, 
 		tablet = {}, 
 		desktop = {}, 
-		expand = true
+		expand = true,
+		viewports = {small, mid, large},
 	) =>{
 	const stretch = expand ? 'stretch' : 'flex-start'
 	
 	const mobileGrid = Object.values(mobile).length > 0
-		&& respondToMax(large, {
+		&& respondToMax(viewports.large, {
 			...flexedGridItem(mobile.cols, mobile.margin)
 		})
 	const tabletGrid = Object.values(tablet).length > 0
-		&& respondToMinMax(mid, large, {
+		&& respondToMinMax(viewports.mid, viewports.large, {
 			...flexedGridItem(tablet.cols, tablet.margin)
 		})
 	const desktopGrid = Object.values(desktop).length > 0
-		&& respondTo(large, {
+		&& respondTo(viewports.large, {
 			...flexedGridItem(desktop.cols, desktop.margin)
 		})
 	return{

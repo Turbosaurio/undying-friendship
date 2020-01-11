@@ -8,24 +8,27 @@ import * as settings from '../../jss/settings'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-const {large, mid} = settings.viewports
+const {large, mid, small} = settings.viewports
 
 
 const questionaryStyles = createUseStyles({
 
 	full_container:{
-		...mixins.flexAll('row', 'center', 'center'),
+		...mixins.flexAll('column', 'center', 'center'),
 		width: '100%',
 		height: '100vh',
+		zIndex: 99,
+		position: 'relative',
 	},
 
-	main_container:{
-		...mixins.widthConstrain(mid),
+	main_container: props => ({
+		...mixins.widthConstrain(props.sliderWidth),
 		boxSizing: 'border-box',
-	},
+	}),
 
 	column_parallax: {
 	  ...mixins.fullSize(),
+	  backgroundColor: 'black',
 	  zIndex: 0,
 	  ...mixins.respondTo(large, {
 	    clip: "rect(0, auto, auto, 0)",
@@ -33,8 +36,10 @@ const questionaryStyles = createUseStyles({
 	    "clip-path": "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"
 	  })
 	},
+
 	item_video_parallax: {
 		display: "block",
+		opacity: .25,
 		...mixins.respondTo(large, {
 		  width: "100%"
 		}),
@@ -53,7 +58,8 @@ const questionaryStyles = createUseStyles({
       position: "fixed",
       top: 0,
       left: 0,
-      width: "100%"
+      width: "auto",
+      height: '100vh',
     })
   },
 
@@ -89,7 +95,9 @@ const questionaryStyles = createUseStyles({
   	...mixins.flexedGrid(
   		{cols: 1, margin: props.spacing },
   		{cols: 2, margin: props.spacing },
-  		{cols: 3, margin: props.spacing },
+  		{cols: 2, margin: props.spacing },
+  		false,
+  		{large: props.sliderWidth, mid: props.sliderWidth, small: small}
   	),
   }),
 
@@ -104,125 +112,183 @@ const questionaryStyles = createUseStyles({
   	boxSizing: 'border-box',
   },
 
-  next_button: props => ({
+  slider_controls:{
+  	...mixins.flexAll('row', 'space-between', 'center'),
+  	boxSizing: 'border-box',
+  	marginTop: props => props.spacing,
+  	paddingLeft: props => props.spacing,
+  	paddingRight: props => props.spacing,
+  },
+
+  slider_button: props => ({
   	display: 'block',
-  	width: props.spacing * 2,
-  	height: props.spacing * 2,
-  	padding: 0,
-  	textAlign: 'center',
+	  padding: props.spacing / 2,
+  	borderRadius: props.spacing / 2,
   	border: 'none',
-  	borderRadius: '50%',
-  	marginTop: props.spacing,
-  	marginLeft: 'auto',
   	fontWeight: 700,
   	color: 'white',
   	backgroundColor: '#77827e',
-  	position: 'relative',
-  	
+  	'&.disabled':{
+  		opacity: .25,
+  	}
   }),
-
 })
 
 
 const QuestionaryTest = _ => {
 
-	const [state, setState] = useState({
+
+
+	const [slider, setSlider] = useState({
 		slideIndex: 0,
 		updateCount: 0,
-		slider: useRef(null),
-		slickSettings:{
-			infinite: false,
-			dots: true,
-		  infinite: true,
-		  speed: 500,
-		  slidesToShow: 1,
-		  slidesToScroll: 1,
-		  arrows: false,
-		  adaptiveHeight: 1,
+	})
 
-		  // afterChange: _ => { setState( state => ({ ...state, updateCount: state.updateCount + 1}))},
-		  // beforeChange: (current, next) => setState({slideIndex: next})
+	const sliderRef = useRef(null)
 
-		  // centerMode: true,
-		},
+	const slickSettings = {
+		infinite: false,
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		arrows: false,
+		adaptiveHeight: 1,
+		afterChange: _ => {setSlider( slider => ({...slider, updateCount: slider.updateCount + 1}))},
+		beforeChange: (current, next) => setSlider( slider => ({...slider, slideIndex: next})),
+	}
+
+
+	const [state, setState] = useState({
 
 		questions:[
 			{
 				key: 'q1',
-				textQuestion: 'provide your details',
+				text: 'provide your details',
 				type: 'input',
 				options: ['name', 'first name', 'second name', 'date of birth', 'nationality', 'email'],
-				answer: '',
 			},
 			{
 				key: 'q5',
-				textQuestion: 'Whats the worst thing you can say on a first date?',
+				text: 'Whats the worst thing you can say on a first date?',
 				type: 'options',
 				options: ['talk about her daddy issues', 'tell her to shut up, that you know best', 'talk about the shit you took earlier'],
-				answer: '',
 			},
 			{
 				key: 'q6',
-				textQuestion: 'Would you rather be stuck in a house with someone you hate or be stuck in a house alone?',
+				text: 'Would you rather be stuck in a house with someone you hate or be stuck in a house alone?',
 				type: 'options',
 				options: ['yes', 'no', 'I dont know'],
-				answer: '',
 			}
 		],
+		answers:{
+			'q1': {},
+			'q2': '',
+			'q3': '',
+		}
 	})
 
 
 
 	const jss = questionaryStyles({
-		spacing: 20
+		spacing: 20,
+		sliderWidth: 600,
 	})
 
-	const InputOptions = options => {
+	const InputOptions = ({options, questionID}) => {
 		return(
 			<form className={jss.options_container}>
-				{options.options.map( o => <input className={jss.input} type="text" placeholder={o} />)}
+				{options.map( o => <input
+					onChange={ e => {
+						setState( state => ({
+							...state,
+							answers:{
+								...state.answers,
+								[questionID]:{
+									...state.answers[questionID],
+									[o.toLowerCase().trim()]: e.target.value
+								}
+							}
+						}))
+					}}
+					className={jss.input}
+					type="text"
+					placeholder={o} />)}
 			</form>
 		)
 	}
 
-	const ButtonOptions = options => {
+	const ButtonOptions = ({options, questionID}) => {
 		return(
 			<div className={jss.options_container}>
-				{options.options.map( o => <button className={jss.button}>{o}</button>)}
+				{options.map( option =>
+					<button
+						className={jss.button}
+						value={option}
+						onClick={ e => {
+							setState(state => ({
+								...state,
+								answers: {
+									...state.answers,
+									[questionID]: e.target.value
+								}
+							}))
+						}} 
+					>{option}</button>)}
 			</div>
 		)
 	}
 
-	const OptionsType = ({type, options}) => {
+	const OptionsType = ({type, ...restOfProps}) => {
 		switch(type){
 			case 'options':
-				return <ButtonOptions options={options}/>
+				return <ButtonOptions {...restOfProps}/>
 			case 'input':
-				return <InputOptions options={options} />
+				return <InputOptions {...restOfProps}/>
 			default: return <div>options not valid</div>
 		}
 	}
 
 	return(
-		<div className={jss.full_container}>
-			<div className={jss.main_container}>
-				<Slider {...state.slickSettings} ref={state.slider}>
-					{
-						state.questions.map(({key, textQuestion, type, options}) =>{
-							return(
-								<div className={jss.question_item} key={key}>
-									<h3 className={jss.question_text}>{textQuestion}</h3>
-									<OptionsType type={type} options={options} />
-									<button
-										className={jss.next_button}
-										value={state.slideIndex}
-										onClick={ e => state.slider.slickGoTo(e.target.value)}
-									>next</button>
-								</div>
-							)
-						})
-					}
-				</Slider>
+		<div className={jss.column_parallax}>
+			<video controls={false} autoPlay={true} muted={true} className={jss.item_video_parallax} src="https://first-metal.mozky.dev/video/main.mp4" />
+			<div className={jss.full_container}>
+				<div className={jss.main_container}>
+					<Slider {...slickSettings} ref={sliderRef}>
+						{
+							state.questions.map(({
+								key: questionKey,
+								text: questionText,
+								type: questionType,
+								options: questionOptions
+							}) =>{
+								return(
+									<div className={jss.question_item} key={questionKey}>
+										<h3 className={jss.question_text}>{questionText}</h3>
+										<OptionsType type={questionType} options={questionOptions} questionID={questionKey}/>
+									</div>
+								)
+							})
+						}
+					</Slider>
+					<div class={jss.slider_controls}>
+						<button
+							disabled={!slider.slideIndex > 0}
+							className={`${jss.slider_button} ${!slider.slideIndex > 0 && 'disabled'}`}
+							value={state.slideIndex}
+							onClick={ e => {sliderRef.current.slickGoTo(e.target.value)}}
+						>Prev</button>
+						<button
+							disabled={slider.slideIndex === (state.questions.length - 1)}
+							className={`${jss.slider_button} ${slider.slideIndex === (state.questions.length - 1) && 'disabled'}`}
+							value={state.slideIndex - 1}
+							onClick={ e => {sliderRef.current.slickGoTo(e.target.value)}}
+						>Next</button>
+					</div>
+
+					<div style={{textAlign: 'center'}}>{JSON.stringify(state.answers)}</div>
+				</div>
 			</div>
 		</div>
 	)
