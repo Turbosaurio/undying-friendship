@@ -272,15 +272,15 @@ export const flexedGrid = (
 	
 	const mobileGrid = Object.values(mobile).length > 0
 		&& respondToMax(viewports.large, {
-			...flexedGridItem(mobile.cols, mobile.margin)
+			...flexedGridItem(mobile.cols, mobile.margin, expand)
 		})
 	const tabletGrid = Object.values(tablet).length > 0
 		&& respondToMinMax(viewports.mid, viewports.large, {
-			...flexedGridItem(tablet.cols, tablet.margin)
+			...flexedGridItem(tablet.cols, tablet.margin, expand)
 		})
 	const desktopGrid = Object.values(desktop).length > 0
 		&& respondTo(viewports.large, {
-			...flexedGridItem(desktop.cols, desktop.margin)
+			...flexedGridItem(desktop.cols, desktop.margin, expand)
 		})
 	return{
 		...flexAll('row', 'center', stretch, 'wrap'),

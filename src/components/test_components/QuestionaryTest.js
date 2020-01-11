@@ -28,6 +28,7 @@ const questionaryStyles = createUseStyles({
 
 	column_parallax: {
 	  ...mixins.fullSize(),
+	  ...mixins.flexAll('row', 'center', 'center'),
 	  backgroundColor: 'black',
 	  zIndex: 0,
 	  ...mixins.respondTo(large, {
@@ -39,6 +40,7 @@ const questionaryStyles = createUseStyles({
 
 	item_video_parallax: {
 		display: "block",
+		margin: 'auto',
 		opacity: .25,
 		...mixins.respondTo(large, {
 		  width: "100%"
@@ -58,7 +60,7 @@ const questionaryStyles = createUseStyles({
       position: "fixed",
       top: 0,
       left: 0,
-      width: "auto",
+      width: "100vw",
       height: '100vh',
     })
   },
@@ -167,25 +169,42 @@ const QuestionaryTest = _ => {
 				key: 'q1',
 				text: 'provide your details',
 				type: 'input',
-				options: ['name', 'first name', 'second name', 'date of birth', 'nationality', 'email'],
+				options: ['first name', 'second name', 'date of birth', 'nationality', 'email'],
 			},
 			{
-				key: 'q5',
+				key: 'q2',
 				text: 'Whats the worst thing you can say on a first date?',
 				type: 'options',
 				options: ['talk about her daddy issues', 'tell her to shut up, that you know best', 'talk about the shit you took earlier'],
 			},
 			{
-				key: 'q6',
+				key: 'q3',
 				text: 'Would you rather be stuck in a house with someone you hate or be stuck in a house alone?',
 				type: 'options',
 				options: ['yes', 'no', 'I dont know'],
+			},
+			{
+				key: 'q4',
+				text: 'If you were the opposite gender for one day, what would you do?',
+				type: 'options',
+				options: ['abuse my male/female privilege', 'talk shit about my previous gender']
+			},
+			{
+				key: 'q5',
+				text: 'give us more infomation about yourself',
+				type: 'input',
+				options: ['profession', 'hours of sleep', 'zodiac sign']
+			},
+			{
+				key: 'q6',
+				text: 'select your favorite president',
+				type: 'select',
+				options: ['lopez obrador', 'AMLO', 'Gansopolis'],
 			}
 		],
 		answers:{
 			'q1': {},
-			'q2': '',
-			'q3': '',
+			'q5': {},
 		}
 	})
 
@@ -199,22 +218,27 @@ const QuestionaryTest = _ => {
 	const InputOptions = ({options, questionID}) => {
 		return(
 			<form className={jss.options_container}>
-				{options.map( o => <input
-					onChange={ e => {
-						setState( state => ({
-							...state,
-							answers:{
-								...state.answers,
-								[questionID]:{
-									...state.answers[questionID],
-									[o.toLowerCase().trim()]: e.target.value
+				{options.map( option =>{
+					const key = option.toLowerCase().trim()
+					return <input
+						onChange={ e => {
+							setState( state => ({
+								...state,
+								answers:{
+									...state.answers,
+									[questionID]:{
+										...state.answers[questionID],
+										[key]: e.target.value
+									}
 								}
-							}
-						}))
-					}}
-					className={jss.input}
-					type="text"
-					placeholder={o} />)}
+							}))
+						}}
+						value={state.answers[questionID][key]}
+						className={jss.input}
+						type="text"
+						placeholder={option} />
+					})
+				}
 			</form>
 		)
 	}
@@ -240,19 +264,39 @@ const QuestionaryTest = _ => {
 		)
 	}
 
+	const SelectOptions = ({options, questionID}) => {
+		return(
+			<select onChange={ e => { setState( state => ({
+				...state,
+				answers:{
+					...state.answers,
+					[questionID]: e.target.value
+				}
+			}))}}>
+				{options.map( option => 
+					<option value={option}>
+						{option}
+					</option>
+				)}
+			</select>
+		)
+	}
+
 	const OptionsType = ({type, ...restOfProps}) => {
 		switch(type){
 			case 'options':
 				return <ButtonOptions {...restOfProps}/>
 			case 'input':
 				return <InputOptions {...restOfProps}/>
+			case 'select':
+				return <SelectOptions {...restOfProps}/>
 			default: return <div>options not valid</div>
 		}
 	}
 
 	return(
 		<div className={jss.column_parallax}>
-			<video controls={false} autoPlay={true} muted={true} className={jss.item_video_parallax} src="https://first-metal.mozky.dev/video/main.mp4" />
+			<video loop={true} controls={false} autoPlay={true} muted={true} className={jss.item_video_parallax} src="https://first-metal.mozky.dev/video/main.mp4" />
 			<div className={jss.full_container}>
 				<div className={jss.main_container}>
 					<Slider {...slickSettings} ref={sliderRef}>
@@ -276,18 +320,20 @@ const QuestionaryTest = _ => {
 						<button
 							disabled={!slider.slideIndex > 0}
 							className={`${jss.slider_button} ${!slider.slideIndex > 0 && 'disabled'}`}
-							value={state.slideIndex}
+							value={state.slideIndex - 1}
 							onClick={ e => {sliderRef.current.slickGoTo(e.target.value)}}
 						>Prev</button>
 						<button
 							disabled={slider.slideIndex === (state.questions.length - 1)}
 							className={`${jss.slider_button} ${slider.slideIndex === (state.questions.length - 1) && 'disabled'}`}
-							value={state.slideIndex - 1}
+							value={state.slideIndex + 1}
 							onClick={ e => {sliderRef.current.slickGoTo(e.target.value)}}
 						>Next</button>
 					</div>
-
-					<div style={{textAlign: 'center'}}>{JSON.stringify(state.answers)}</div>
+					<div style={{textAlign: 'center'}}>
+						<div>{JSON.stringify(slider)}</div>
+						<div>{JSON.stringify(state.answers)}</div>
+					</div>
 				</div>
 			</div>
 		</div>
