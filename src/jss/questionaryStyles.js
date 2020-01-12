@@ -25,7 +25,6 @@ export default function questionaryStyles(custom) {
 
   	column_parallax: {
   	  ...mixins.fullSize(),
-  	  ...mixins.flexAll('row', 'center', 'center'),
   	  backgroundColor: 'black',
   	  zIndex: 0,
   	  ...mixins.respondTo(large, {
@@ -36,30 +35,15 @@ export default function questionaryStyles(custom) {
   	},
 
   	item_video_parallax: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
   		display: "block",
   		margin: 'auto',
   		opacity: .25,
-  		...mixins.respondTo(large, {
-  		  width: "100%"
-  		}),
-      ...mixins.respondToMax(large, {
-        position: "absolute",
-        left: 0,
-        top: 0,
-        width: "auto",
-        height: "100vh"
-      }),
-      ...mixins.respondToMax(mid, {
-        width: "100vw",
-        height: "auto"
-      }),
-      ...mixins.respondTo(large, {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: '100vh',
-      })
+      objectFit: 'cover',
     },
 
     question_item: {
@@ -90,7 +74,6 @@ export default function questionaryStyles(custom) {
     },
 
     options_container: props => ({
-    	...mixins.flexAll('row', 'center', 'center'),
     	...mixins.flexedGrid(
     		{cols: 1, margin: props.spacing },
     		{cols: 2, margin: props.spacing },
@@ -109,24 +92,33 @@ export default function questionaryStyles(custom) {
     	padding: props => props.spacing / 2,
     	borderRadius: props => props.spacing / 2,
     	boxSizing: 'border-box',
+      '&.active':{
+        backgroundColor: '#234584'
+      },
     },
 
+
+
+
     slider_controls:{
-    	...mixins.flexAll('row', 'space-between', 'center'),
+    	...mixins.flexAll('row', 'flex-end', 'center'),
     	boxSizing: 'border-box',
-    	marginTop: props => props.spacing,
     	paddingLeft: props => props.spacing,
     	paddingRight: props => props.spacing,
     },
 
     slider_button: props => ({
     	display: 'block',
-  	  padding: props.spacing / 2,
+  	  padding: [props.spacing / 2, props.spacing],
     	borderRadius: props.spacing / 2,
     	border: 'none',
     	fontWeight: 700,
     	color: 'white',
+      textTransform: 'uppercase',
     	backgroundColor: '#77827e',
+      '&:not(:first-child)':{
+        marginLeft: props.spacing,
+      },
     	'&.disabled':{
     		opacity: .25,
     	}
@@ -141,15 +133,17 @@ export default function questionaryStyles(custom) {
 
     alert_message:{
       width: '100%',
-       padding: [3, 6],
-       boxSizing: 'border-box',
-       backgroundColor: '#c12d22',
-       color: 'white',
-       fontSize: 14,
-       borderRadius: 3,
-       '&:not(:first-child)':{
-         marginTop: 3,
-       }
+      padding: [3, 6],
+      boxSizing: 'border-box',
+      backgroundColor: '#c12d22',
+      color: 'white',
+      fontSize: 14,
+      borderRadius: 3,
+      border: 'none',
+      textAlign: 'left',
+      '&:not(:first-child)':{
+        marginTop: 3,
+      },
     }
 
   })(custom)

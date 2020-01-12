@@ -1,12 +1,20 @@
 import React, {Fragment, useState, useRef} from 'react'
+import uuidv4 from 'uuid/v4'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
+import questions from './questions'
 import questionaryStyles from '../../jss/questionaryStyles'
 
 
 const QuestionaryTest = _ => {
+
+	const jss = questionaryStyles({
+		spacing: 20,
+		sliderWidth: 600,
+	})
+
 	const [slider, setSlider] = useState({
 		slideIndex: 0,
 		updateCount: 0,
@@ -28,82 +36,37 @@ const QuestionaryTest = _ => {
 	}
 
 
-	const [state, setState] = useState({
-		thankyou: false,
-		alerts: ['please fill all the fields', 'you forgot something in the first question'],
-		questions:[
-			{
-				key: 'q1',
-				text: 'provide your details',
-				type: 'input',
-				options: ['first name', 'second name', 'date of birth', 'nationality', 'email'],
-			},
-			{
-				key: 'q2',
-				text: 'Whats the worst thing you can say on a first date?',
-				type: 'options',
-				options: ['talk about her daddy issues', 'tell her to shut up, that you know best', 'talk about the shit you took earlier'],
-			},
-			{
-				key: 'q3',
-				text: 'Would you rather be stuck in a house with someone you hate or be stuck in a house alone?',
-				type: 'options',
-				options: ['yes', 'no', 'I dont know'],
-			},
-			{
-				key: 'q4',
-				text: 'If you were the opposite gender for one day, what would you do?',
-				type: 'options',
-				options: ['abuse my male/female privilege', 'talk shit about my previous gender']
-			},
-			{
-				key: 'q5',
-				text: 'give us more infomation about yourself',
-				type: 'input',
-				options: ['profession', 'hours of sleep', 'zodiac sign']
-			},
-			{
-				key: 'q6',
-				text: 'select your favorite president',
-				type: 'select',
-				options: ['lopez obrador', 'AMLO', 'Gansopolis'],
-			}
-		],
-		answers:{
-			'q1': {},
-			'q5': {},
-		}
-	})
-
-
-	const jss = questionaryStyles({
-		spacing: 20,
-		sliderWidth: 600,
-	})
+	const [state, setState] = useState(questions)
 
 	const InputOptions = ({options, questionID}) => {
 		return(
 			<form className={jss(['options_container'])}>
-				{options.map( option =>{
-					const key = option.toLowerCase().trim()
-					return <input
-						onChange={ e => {
-							setState( state => ({
-								...state,
-								answers:{
-									...state.answers,
-									[questionID]:{
-										...state.answers[questionID],
-										[key]: e.target.value
-									}
-								}
-							}))
-						}}
-						key={option.trim()}
-						value={state.answers[questionID][key]}
-						className={jss(['input'])}
-						type="text"
-						placeholder={option} />
+				{options.map( ({placeholder, name, type}) =>{
+					
+					return(
+						<div>
+							<input
+								onChange={ e => {
+									setState( state => ({
+										...state,
+										answers:{
+											...state.answers,
+											[questionID]:{
+												...state.answers[questionID],
+												[name]: e.target.value
+											}
+										}
+									}))
+								}}
+								key={`${questionID}${name}`}
+								value={state.answers[questionID][name]}
+								className={jss(['input'])}
+								name={name}
+								type={type}
+								placeholder={placeholder} />
+								<label className={jss(['hidden'])}>{placeholder}</label>
+						</div>
+					)
 					})
 				}
 			</form>
@@ -113,10 +76,10 @@ const QuestionaryTest = _ => {
 	const ButtonOptions = ({options, questionID}) => {
 		return(
 			<div className={jss(['options_container'])}>
-				{options.map( option =>
-					<button
+				{options.map( option =>{
+					return <button
 						key={option.trim()}
-						className={jss(['button'])}
+						className={`${jss(['button'])} ${state.answers[questionID] === option ? 'active' : ''}`}
 						value={option}
 						onClick={ e => {
 							setState(state => ({
@@ -127,7 +90,8 @@ const QuestionaryTest = _ => {
 								}
 							}))
 						}} 
-					>{option}</button>)}
+					>{option}</button>
+				})}
 			</div>
 		)
 	}
@@ -162,9 +126,16 @@ const QuestionaryTest = _ => {
 		}
 	}
 
-	const Alerts = ({message}) =>
+	const Alerts = ({messages}) =>
 		<div className={jss(['alerts'])}>
-			{message.map( (m, i) => <div key={i} className={jss(['alert_message'])}>{m}</div>)}
+			{Object.keys(messages).map( (mess, i) => {
+				const m = messages[mess]
+				return <button
+					key={i}
+					onClick={ _ => {sliderRef.current.slickGoTo(m.inSlide)}}
+					className={jss(['alert_message'])}
+				>{m.text}</button>
+			})}
 		</div>
 
 	const Thankyou = _ => <div>Thanks for participating</div>
@@ -208,15 +179,42 @@ const QuestionaryTest = _ => {
 								>Next</button>
 								<button
 									title="Finish questionary"
-									disabled={slider.slideIndex !== (state.questions.length - 1)}
+									disabled={(slider.slideIndex !== (state.questions.length - 1) && state.alerts.length === {})}
 									className={`${jss(['slider_button'])} ${slider.slideIndex !== (state.questions.length - 1) && 'disabled'}`}
-									onClick={ _ => {setState(state=> ({...state, thankyou: true}))}}
+									onClick={ _ => {setState(state=> ({...state, thankyou: true, alerts: []}))}}
 								>End</button>
 							</div>
 						</div>
 						: <div className={jss(['main_container'])}><Thankyou /></div>
 				}
-				<Alerts message={state.alerts} />
+				<Alerts messages={state.alerts} />
+
+				<div style={{
+					position: 'fixed',
+					right: 0,
+					bottom: 0,
+					padding: 10,
+					background: 'white',
+					color: 'black',
+					width: 400,
+				}}>
+					<button onClick={ _ => {
+						const alert = uuidv4()
+						setState(state=>({
+							...state,
+							alerts:{
+								...state.alerts,
+								[alert]:{
+									text: 'hola hola',
+									inSlide: 3,
+								}
+							}
+						}))
+					}}>push new alert</button>
+					<div>{JSON.stringify(slider)}</div>
+					<div>{JSON.stringify(state.answers)}</div>
+				</div>
+
 			</div>
 		</div>
 	)
