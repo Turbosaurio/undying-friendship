@@ -69,7 +69,7 @@ const VideoBackground = props =>{
 		backgroundColor,
 		videoOpacity,
 	})
-	console.log('video props',props)
+
 	return(
 		<div className={jss(['video_holder'])}>
 			<video className={jss(['video', videoPosition])} src={src} {...decorativeVideoAttr} />

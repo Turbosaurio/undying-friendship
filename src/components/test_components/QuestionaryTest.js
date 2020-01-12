@@ -12,29 +12,58 @@ import BackgroundVideo from './BackgroundVideo'
 
 const QuestionaryTest = _ => {
 
+	const sliderRef = useRef(null)
 	const jss = questionaryStyles({
 		spacing: 20,
 		sliderWidth: 600,
 	})
 
+	const [state, setState] = useState(questions)
+
 	const [slider, setSlider] = useState({
 		slideIndex: 0,
 		updateCount: 0,
+
+		currentQuestion: '',
+
+		prevButtonStatus: true,
+		nextButtonStatus: true,
+		submitButtonStatues: true,
 	})
 
-	const sliderRef = useRef(null)
 
 	const slickSettings = {
-		infinite: false,
 		dots: false,
-		infinite: true,
+		infinite: false,
 		speed: 500,
 		slidesToShow: 1,
 		slidesToScroll: 1,
 		arrows: false,
 		adaptiveHeight: true,
+		focusOnSelect: true,
+		
 		afterChange: _ => {setSlider( slider => ({...slider, updateCount: slider.updateCount + 1}))},
-		beforeChange: (current, next) => setSlider( slider => ({...slider, slideIndex: next})),
+		beforeChange: (current, next) =>{
+			const {key} = state.questions[next]
+			setSlider( slider => ({
+				...slider,
+				slideIndex: next,
+				currentQuestion: key
+			}))
+		},
+	}
+
+	function prevSlide(){
+		sliderRef.current.slickGoTo(slider.slideIndex - 1)
+	}
+
+	function nextSlide(){
+		// pushAlert('there are stuffs missing in q1','q1')
+		sliderRef.current.slickGoTo(slider.slideIndex + 1)
+	}
+
+	function submit(){
+		setState(state=> ({...state, thankyou: true, alerts: []}))
 	}
 
 	function pushAlert(text, inSlide){
@@ -57,7 +86,6 @@ const QuestionaryTest = _ => {
 	}
 
 
-	const [state, setState] = useState(questions)
 
 	const InputOptions = ({options, questionID}) => {
 		return(
@@ -65,7 +93,7 @@ const QuestionaryTest = _ => {
 				{options.map( ({placeholder, name, type}) =>{
 					const attributes = {placeholder, name, type}
 					return(
-						<div>
+						<div key={`${questionID}${name}`}>
 							<input
 								onChange={ e => {
 									setState( state => ({
@@ -79,7 +107,6 @@ const QuestionaryTest = _ => {
 										}
 									}))
 								}}
-								key={`${questionID}${name}`}
 								value={state.answers[questionID][name]}
 								className={jss(['input'])}
 								{...attributes}
@@ -158,7 +185,7 @@ const QuestionaryTest = _ => {
 			})}
 		</div>
 
-	const Thankyou = _ => <div>Thanks for participating</div>
+	const Thankyou = _ => <div className={jss(['tanks_message'])}>Thanks for participating!</div>
 
 	return(
 		<BackgroundVideo src="https://first-metal.mozky.dev/video/main.mp4" videoPosition="parallax" backgroundColor="#000" videoOpacity={.25}>
@@ -186,28 +213,28 @@ const QuestionaryTest = _ => {
 							<div className={jss(['slider_controls'])}>
 								<button
 									title="Go to previous question"
-									disabled={!slider.slideIndex > 0}
-									className={`${jss(['slider_button'])} ${!slider.slideIndex > 0 && 'disabled'}`}
-									onClick={ _ => {sliderRef.current.slickGoTo(slider.slideIndex - 1)}}
+									// disabled={slider.prevButtonStatus}
+									className={`${jss(['slider_button'])} ${!slider.prevButtonStatus ? 'disabled' : ''}`}
+									onClick={prevSlide}
 								>Prev</button>
 								<button
 									title="Go to next question"
-									disabled={slider.slideIndex === (state.questions.length - 1)}
-									className={`${jss(['slider_button'])} ${slider.slideIndex === (state.questions.length - 1) && 'disabled'}`}
-									onClick={ _ => {sliderRef.current.slickGoTo(slider.slideIndex + 1)}}
+									// disabled={slider.nextButtonStatus}
+									className={`${jss(['slider_button'])} ${!slider.nextButtonStatus ? 'disabled' : ''}`}
+									onClick={nextSlide}
 								>Next</button>
 								<button
 									title="Finish questionary"
-									disabled={(slider.slideIndex !== (state.questions.length - 1) && state.alerts.length === {})}
-									className={`${jss(['slider_button'])} ${slider.slideIndex !== (state.questions.length - 1) && 'disabled'}`}
-									onClick={ _ => {setState(state=> ({...state, thankyou: true, alerts: []}))}}
+									// disabled={slider.submitButtonStatues}
+									className={`${jss(['slider_button'])} ${!slider.submitButtonStatues ? 'disabled' : ''}`}
+									onClick={submit}
 								>End</button>
 							</div>
+							<div className={jss(['privacy'])}><a href="#">Privacy Policy</a></div>
 						</div>
 						: <div className={jss(['main_container'])}><Thankyou /></div>
 				}
 				<Alerts messages={state.alerts} />
-
 				<div style={{
 					position: 'fixed',
 					right: 0,

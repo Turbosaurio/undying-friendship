@@ -6,7 +6,7 @@ const defaultWidgetSettings = {
 		summaryLayout: 'a',
 		listColumns: 2,
 		widgetSpacing: 10,
-		slick: false,
+		slick: true,
 	}
 }
 

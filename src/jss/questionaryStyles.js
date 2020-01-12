@@ -122,7 +122,22 @@ export default function questionaryStyles(custom) {
       '&:not(:first-child)':{
         marginTop: 3,
       },
-    }
+    },
+
+    tanks_message:{
+      fontWeight: 700,
+      textTransform: 'uppercase',
+      fontSize: 30,
+      textAlign: 'center',
+    },
+
+    privacy: props =>({
+      ...mixins.paddedBox(props.spacing),
+      textAlign: 'right',
+      '& a':{
+        color: 'inherit',
+      }
+    }),
 
   })(custom)
 
