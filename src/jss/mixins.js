@@ -332,3 +332,15 @@ export const bgCover = _ => ({
 	}
 })
 
+export const paddedBox = padding => ({
+	boxSizing: 'border-box',
+	padding: padding,
+})
+
+export const objectCover = _ =>({
+	top: 0,
+	left: 0,
+	width: "100%",
+	height: "100%",
+	objectFit: 'cover',
+})

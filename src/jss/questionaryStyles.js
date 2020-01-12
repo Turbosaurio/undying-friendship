@@ -23,28 +23,6 @@ export default function questionaryStyles(custom) {
   		boxSizing: 'border-box',
   	}),
 
-  	column_parallax: {
-  	  ...mixins.fullSize(),
-  	  backgroundColor: 'black',
-  	  zIndex: 0,
-  	  ...mixins.respondTo(large, {
-  	    clip: "rect(0, auto, auto, 0)",
-  	    "-webkit-clip-path": "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-  	    "clip-path": "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"
-  	  })
-  	},
-
-  	item_video_parallax: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-  		display: "block",
-  		margin: 'auto',
-  		opacity: .25,
-      objectFit: 'cover',
-    },
 
     question_item: {
     	boxSizing: 'border-box',
@@ -116,9 +94,9 @@ export default function questionaryStyles(custom) {
     	color: 'white',
       textTransform: 'uppercase',
     	backgroundColor: '#77827e',
-      '&:not(:first-child)':{
-        marginLeft: props.spacing,
-      },
+      ...mixins.notFirst({
+        marginLeft: props.spacing,        
+      }),
     	'&.disabled':{
     		opacity: .25,
     	}

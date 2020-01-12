@@ -9,21 +9,25 @@ export default {
 				options: [
 					{
 						placeholder: 'first name',
+						required: true,
 						name: 'firstname',
 						type: 'text',
 					},
 					{
 						placeholder: 'second name',
+						required: true,
 						name: 'secondName',
 						type: 'text',
 					},
 					{
 						placeholder: 'birth',
+						required: false,
 						name: 'birth',
 						type: 'date',
 					},
 					{
 						placeholder: 'email',
+						required: true,
 						name: 'email',
 						type: 'email',
 					},
@@ -54,17 +58,12 @@ export default {
 				options: [
 					{
 						placeholder: 'something',
+						required: false,
 						name: 'something',
 						type: 'text',
 					},
 				]
 			},
-			{
-				key: 'q6',
-				text: 'select your favorite president',
-				type: 'select',
-				options: ['lopez obrador', 'AMLO', 'Gansopolis'],
-			}
 		],
 		answers:{
 			'q1': {},

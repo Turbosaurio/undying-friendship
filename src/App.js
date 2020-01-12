@@ -33,6 +33,8 @@ const Site = _ =>{
 	)
 }
 
+const Cosas = _ => <Fragment><QuestionaryTest /></Fragment>
+
 const App = ({init, loading}) =>{
 	useEffect( _ => {init()}, [init])
 	return (
@@ -46,7 +48,7 @@ const App = ({init, loading}) =>{
 						<Switch>
 							<Route exact path="/" component={Test} />
 							<Route path="/site" component={Site}/>
-							<Route path="/questionary" component={QuestionaryTest} />
+							<Route path="/questionary" component={Cosas} />
 							<Route component={viernullvier}/>
 						</Switch>
 					</Fragment>

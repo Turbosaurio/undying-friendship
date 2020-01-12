@@ -7,6 +7,8 @@ import 'slick-carousel/slick/slick-theme.css'
 import questions from './questions'
 import questionaryStyles from '../../jss/questionaryStyles'
 
+import BackgroundVideo from './BackgroundVideo'
+
 
 const QuestionaryTest = _ => {
 
@@ -35,6 +37,25 @@ const QuestionaryTest = _ => {
 		beforeChange: (current, next) => setSlider( slider => ({...slider, slideIndex: next})),
 	}
 
+	function pushAlert(text, inSlide){
+		const alert = uuidv4()
+		setState(state=>({
+			...state,
+			alerts:{
+				...state.alerts,
+				[alert]:{text: `${text}, in slide: ${inSlide}`, inSlide}
+			}
+		}))
+	}
+
+	function removeAlert(uuid){
+		const {[uuid]: alertToRemove, ...restOfAlerts} = state.alerts
+		setState( state=>({
+			...state,
+			alerts: restOfAlerts
+		}))
+	}
+
 
 	const [state, setState] = useState(questions)
 
@@ -42,7 +63,7 @@ const QuestionaryTest = _ => {
 		return(
 			<form className={jss(['options_container'])}>
 				{options.map( ({placeholder, name, type}) =>{
-					
+					const attributes = {placeholder, name, type}
 					return(
 						<div>
 							<input
@@ -61,10 +82,9 @@ const QuestionaryTest = _ => {
 								key={`${questionID}${name}`}
 								value={state.answers[questionID][name]}
 								className={jss(['input'])}
-								name={name}
-								type={type}
-								placeholder={placeholder} />
-								<label className={jss(['hidden'])}>{placeholder}</label>
+								{...attributes}
+							/>
+							<label className={jss(['hidden'])}>{placeholder}</label>
 						</div>
 					)
 					})
@@ -141,8 +161,7 @@ const QuestionaryTest = _ => {
 	const Thankyou = _ => <div>Thanks for participating</div>
 
 	return(
-		<div className={jss(['column_parallax'])}>
-			<video loop={true} controls={false} autoPlay={true} muted={true} className={jss(['item_video_parallax'])} src="https://first-metal.mozky.dev/video/main.mp4" />
+		<BackgroundVideo src="https://first-metal.mozky.dev/video/main.mp4" videoPosition="parallax" backgroundColor="#000" videoOpacity={.25}>
 			<div className={jss(['full_container'])}>
 				{
 					!state.thankyou
@@ -199,24 +218,14 @@ const QuestionaryTest = _ => {
 					width: 400,
 				}}>
 					<button onClick={ _ => {
-						const alert = uuidv4()
-						setState(state=>({
-							...state,
-							alerts:{
-								...state.alerts,
-								[alert]:{
-									text: 'hola hola',
-									inSlide: 3,
-								}
-							}
-						}))
+						const randomSlide = Math.floor(Math.random() * state.questions.length)
+						pushAlert('hola push alert', randomSlide)
 					}}>push new alert</button>
 					<div>{JSON.stringify(slider)}</div>
 					<div>{JSON.stringify(state.answers)}</div>
 				</div>
-
 			</div>
-		</div>
+		</BackgroundVideo>
 	)
 }
 
