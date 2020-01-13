@@ -26,9 +26,9 @@ const QuestionaryTest = _ => {
 
 		currentQuestion: '',
 
-		prevButtonStatus: true,
+		prevButtonStatus: false,
 		nextButtonStatus: true,
-		submitButtonStatues: true,
+		submitButtonStatus: false,
 	})
 
 
@@ -45,11 +45,19 @@ const QuestionaryTest = _ => {
 		afterChange: _ => {setSlider( slider => ({...slider, updateCount: slider.updateCount + 1}))},
 		beforeChange: (current, next) =>{
 			const {key} = state.questions[next]
+			const prevButtonStatus = next > 0 ? true : false
+			const nextButtonStatus = next === (state.questions.length - 1) ? false : true
+			// const submitButtonStatus = next === (state.questions.length - 1) ? true : false
 			setSlider( slider => ({
 				...slider,
 				slideIndex: next,
-				currentQuestion: key
+				currentQuestion: key,
+				prevButtonStatus,
+				nextButtonStatus,
+				submitButtonStatus: !nextButtonStatus,
 			}))
+
+
 		},
 	}
 
@@ -58,9 +66,15 @@ const QuestionaryTest = _ => {
 	}
 
 	function nextSlide(){
-		// pushAlert('there are stuffs missing in q1','q1')
 		sliderRef.current.slickGoTo(slider.slideIndex + 1)
+		const {slideIndex} = slider
+		const {key} = state.questions[slideIndex]
+		if(Object.keys(state.answers[key]).length === 0){
+			pushAlert(`errors in ${key}, click to go there`, slideIndex)
+		}
 	}
+
+
 
 	function submit(){
 		setState(state=> ({...state, thankyou: true, alerts: []}))
@@ -213,20 +227,20 @@ const QuestionaryTest = _ => {
 							<div className={jss(['slider_controls'])}>
 								<button
 									title="Go to previous question"
-									// disabled={slider.prevButtonStatus}
+									disabled={!slider.prevButtonStatus}
 									className={`${jss(['slider_button'])} ${!slider.prevButtonStatus ? 'disabled' : ''}`}
 									onClick={prevSlide}
 								>Prev</button>
 								<button
 									title="Go to next question"
-									// disabled={slider.nextButtonStatus}
+									disabled={!slider.nextButtonStatus}
 									className={`${jss(['slider_button'])} ${!slider.nextButtonStatus ? 'disabled' : ''}`}
 									onClick={nextSlide}
 								>Next</button>
 								<button
 									title="Finish questionary"
-									// disabled={slider.submitButtonStatues}
-									className={`${jss(['slider_button'])} ${!slider.submitButtonStatues ? 'disabled' : ''}`}
+									disabled={!slider.submitButtonStatus}
+									className={`${jss(['slider_button'])} ${!slider.submitButtonStatus ? 'disabled' : ''}`}
 									onClick={submit}
 								>End</button>
 							</div>
@@ -248,7 +262,7 @@ const QuestionaryTest = _ => {
 						const randomSlide = Math.floor(Math.random() * state.questions.length)
 						pushAlert('hola push alert', randomSlide)
 					}}>push new alert</button>
-					<div>{JSON.stringify(slider)}</div>
+					<div>{Object.keys(slider).map( i => <div>{`${i}: ${slider[i]}`}</div>)}</div>
 					<div>{JSON.stringify(state.answers)}</div>
 				</div>
 			</div>
