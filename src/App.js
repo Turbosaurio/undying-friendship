@@ -10,7 +10,7 @@ import LoadingBar from 'react-redux-loading-bar'
 import UIMain from './components/ui_components/UIMain'
 import {TestFunctionA} from './components/test_components/TestA'
 import QuestionaryTest from './components/test_components/QuestionaryTest'
-import ParallaxImages from './components/test_components/ParallaxImages'
+// import ParallaxImages from './components/test_components/ParallaxImages'
 
 import SiteHeader from './components/site_components/SiteHeader'
 import SiteBody from './components/site_components/SiteBody'
@@ -50,7 +50,6 @@ const App = ({init, loading}) =>{
 							<Route exact path="/" component={Test} />
 							<Route path="/site" component={Site}/>
 							<Route path="/questionary" component={Cosas} />
-							<Route path='/parallax' component={ParallaxImages} />
 							<Route component={viernullvier}/>
 						</Switch>
 					</Fragment>

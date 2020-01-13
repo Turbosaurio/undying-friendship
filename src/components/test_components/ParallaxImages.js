@@ -14,22 +14,26 @@ const useMousePosition = _ => {
 }
 
 const ParallaxImages = props => {
-	
+
+	const {images, speed} = props
 	const jss = parallaxStyles()
 	const position = useMousePosition()
 
 	return (
 		<div className={jss(['parallax_container'])}>
 			<div className={jss(['parallax'])}>
-				<div className={jss(['image', 'layer_a'])} style={{top: -position.y * .015, left: -position.x * .015}}/>
-				<div className={jss(['image', 'layer_b'])} style={{top: -position.y * .025, left: -position.x * .025}}/>
-				<div className={jss(['image', 'layer_c'])} style={{top: -position.y * .035, left: -position.x * .035}}/>
-				<div className={jss(['image', 'layer_d'])} style={{top: -position.y * .045, left: -position.x * .045}}/>
+				{images.map( (url, i) =>
+					<div
+						key={i}
+						className={jss(['image'])}
+						style={{
+							backgroundImage: `url(${url})`,
+							top: -position.y * (speed * i) + speed,
+							left: -position.x * (speed * i) + speed
+						}}
+					/>
+				)}
 			</div>
-			<div className={jss(['hola'])}>
-				<div>HOLA</div>
-			</div>
-
 		</div>
 	)
 }

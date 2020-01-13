@@ -8,6 +8,7 @@ import questions from './questions'
 import questionaryStyles from '../../jss/questionaryStyles'
 
 import BackgroundVideo from './BackgroundVideo'
+import ParallaxImages from './ParallaxImages'
 
 
 const QuestionaryTest = _ => {
@@ -203,6 +204,16 @@ const QuestionaryTest = _ => {
 
 	return(
 		<BackgroundVideo src="https://first-metal.mozky.dev/video/main.mp4" videoPosition="parallax" backgroundColor="#000" videoOpacity={.25}>
+			
+			<ParallaxImages images={[
+				'http://elikirk.com/demos/liquipel/images/water-layer-1.png',
+				'http://elikirk.com/demos/liquipel/images/water-layer-2.png',
+				'http://elikirk.com/demos/liquipel/images/water-layer-3.png',
+				'http://elikirk.com/demos/liquipel/images/water-layer-4.png'
+				]}
+				speed={.015}
+			/>
+
 			<div className={jss(['full_container'])}>
 				{
 					!state.thankyou
